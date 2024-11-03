@@ -27,33 +27,117 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_align(ui_Label4, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label4, "Current Leg");
 
-    ui_Label5 = lv_label_create(ui_Container2);
-    lv_obj_set_width(ui_Label5, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label5, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_x(ui_Label5, 0);
-    lv_obj_set_y(ui_Label5, 6);
-    lv_obj_set_align(ui_Label5, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_Label5, "Leg2");
+    ui_CurrentLeg = lv_label_create(ui_Container2);
+    lv_obj_set_width(ui_CurrentLeg, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_CurrentLeg, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_CurrentLeg, 0);
+    lv_obj_set_y(ui_CurrentLeg, 6);
+    lv_obj_set_align(ui_CurrentLeg, LV_ALIGN_CENTER);
+    lv_label_set_text(ui_CurrentLeg, "Leg2");
 
     ui_Panel1 = lv_obj_create(ui_Screen1);
     lv_obj_set_width(ui_Panel1, 195);
-    lv_obj_set_height(ui_Panel1, 51);
+    lv_obj_set_height(ui_Panel1, 135);
     lv_obj_set_x(ui_Panel1, 1);
     lv_obj_set_y(ui_Panel1, 0);
     lv_obj_set_align(ui_Panel1, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_Panel1, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_Label6 = lv_label_create(ui_Panel1);
-    lv_obj_set_width(ui_Label6, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label6, LV_SIZE_CONTENT);    /// 1
-    lv_label_set_text(ui_Label6, "Tool Loaded");
+    ui_ToolLabel = lv_label_create(ui_Panel1);
+    lv_obj_set_width(ui_ToolLabel, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_ToolLabel, LV_SIZE_CONTENT);    /// 1
+    lv_label_set_text(ui_ToolLabel, "Tool Loaded:");
 
-    ui_Label7 = lv_label_create(ui_Panel1);
-    lv_obj_set_width(ui_Label7, LV_SIZE_CONTENT);   /// 1
-    lv_obj_set_height(ui_Label7, LV_SIZE_CONTENT);    /// 1
-    lv_obj_set_align(ui_Label7, LV_ALIGN_RIGHT_MID);
-    lv_label_set_text(ui_Label7, "False");
+    ui_ToolStatus = lv_label_create(ui_Panel1);
+    lv_obj_set_width(ui_ToolStatus, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_ToolStatus, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_ToolStatus, LV_ALIGN_TOP_RIGHT);
+    lv_label_set_text(ui_ToolStatus, "False");
 
-    uic_Label5 = ui_Label5;
+    ui_HubStatusLabel = lv_label_create(ui_Panel1);
+    lv_obj_set_width(ui_HubStatusLabel, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_HubStatusLabel, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_HubStatusLabel, LV_ALIGN_LEFT_MID);
+    lv_label_set_text(ui_HubStatusLabel, "Hub Loaded:");
+
+    ui_HubStatus = lv_label_create(ui_Panel1);
+    lv_obj_set_width(ui_HubStatus, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_HubStatus, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_align(ui_HubStatus, LV_ALIGN_RIGHT_MID);
+    lv_label_set_text(ui_HubStatus, "False");
+
+    ui_Panel2 = lv_obj_create(ui_Screen1);
+    lv_obj_set_width(ui_Panel2, 126);
+    lv_obj_set_height(ui_Panel2, 155);
+    lv_obj_set_x(ui_Panel2, -14);
+    lv_obj_set_y(ui_Panel2, 0);
+    lv_obj_set_align(ui_Panel2, LV_ALIGN_RIGHT_MID);
+    lv_obj_clear_flag(ui_Panel2, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+
+    ui_Leg1Label = lv_label_create(ui_Panel2);
+    lv_obj_set_width(ui_Leg1Label, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Leg1Label, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Leg1Label, -15);
+    lv_obj_set_y(ui_Leg1Label, 0);
+    lv_label_set_text(ui_Leg1Label, "Leg1:");
+
+    ui_Leg2Label = lv_label_create(ui_Panel2);
+    lv_obj_set_width(ui_Leg2Label, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Leg2Label, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Leg2Label, -15);
+    lv_obj_set_y(ui_Leg2Label, -15);
+    lv_obj_set_align(ui_Leg2Label, LV_ALIGN_LEFT_MID);
+    lv_label_set_text(ui_Leg2Label, "Leg2:");
+
+    ui_Leg4Label = lv_label_create(ui_Panel2);
+    lv_obj_set_width(ui_Leg4Label, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Leg4Label, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Leg4Label, -15);
+    lv_obj_set_y(ui_Leg4Label, 0);
+    lv_obj_set_align(ui_Leg4Label, LV_ALIGN_BOTTOM_LEFT);
+    lv_label_set_text(ui_Leg4Label, "Leg4:");
+
+    ui_Leg3Label = lv_label_create(ui_Panel2);
+    lv_obj_set_width(ui_Leg3Label, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Leg3Label, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Leg3Label, -15);
+    lv_obj_set_y(ui_Leg3Label, 15);
+    lv_obj_set_align(ui_Leg3Label, LV_ALIGN_LEFT_MID);
+    lv_label_set_text(ui_Leg3Label, "Leg3:");
+
+    ui_Leg1Status = lv_label_create(ui_Panel2);
+    lv_obj_set_width(ui_Leg1Status, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Leg1Status, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Leg1Status, 10);
+    lv_obj_set_y(ui_Leg1Status, 0);
+    lv_obj_set_align(ui_Leg1Status, LV_ALIGN_TOP_RIGHT);
+    lv_label_set_text(ui_Leg1Status, "Loaded");
+
+    ui_Leg2Status = lv_label_create(ui_Panel2);
+    lv_obj_set_width(ui_Leg2Status, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Leg2Status, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Leg2Status, 10);
+    lv_obj_set_y(ui_Leg2Status, -15);
+    lv_obj_set_align(ui_Leg2Status, LV_ALIGN_RIGHT_MID);
+    lv_label_set_text(ui_Leg2Status, "Unloaded");
+
+    ui_Leg3Status = lv_label_create(ui_Panel2);
+    lv_obj_set_width(ui_Leg3Status, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Leg3Status, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Leg3Status, 10);
+    lv_obj_set_y(ui_Leg3Status, 15);
+    lv_obj_set_align(ui_Leg3Status, LV_ALIGN_RIGHT_MID);
+    lv_label_set_text(ui_Leg3Status, "Unloaded");
+
+    ui_Leg4Status = lv_label_create(ui_Panel2);
+    lv_obj_set_width(ui_Leg4Status, LV_SIZE_CONTENT);   /// 1
+    lv_obj_set_height(ui_Leg4Status, LV_SIZE_CONTENT);    /// 1
+    lv_obj_set_x(ui_Leg4Status, 10);
+    lv_obj_set_y(ui_Leg4Status, 0);
+    lv_obj_set_align(ui_Leg4Status, LV_ALIGN_BOTTOM_RIGHT);
+    lv_label_set_text(ui_Leg4Status, "Unloaded");
+
+    uic_CurrentLeg = ui_CurrentLeg;
+    uic_ToolStatus = ui_ToolStatus;
 
 }

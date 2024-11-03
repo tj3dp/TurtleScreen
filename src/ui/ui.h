@@ -21,12 +21,24 @@ void ui_Screen1_screen_init(void);
 extern lv_obj_t * ui_Screen1;
 extern lv_obj_t * ui_Container2;
 extern lv_obj_t * ui_Label4;
-extern lv_obj_t * ui_Label5;
+extern lv_obj_t * ui_CurrentLeg;
 extern lv_obj_t * ui_Panel1;
-extern lv_obj_t * ui_Label6;
-extern lv_obj_t * ui_Label7;
+extern lv_obj_t * ui_ToolLabel;
+extern lv_obj_t * ui_ToolStatus;
+extern lv_obj_t * ui_HubStatusLabel;
+extern lv_obj_t * ui_HubStatus;
+extern lv_obj_t * ui_Panel2;
+extern lv_obj_t * ui_Leg1Label;
+extern lv_obj_t * ui_Leg2Label;
+extern lv_obj_t * ui_Leg4Label;
+extern lv_obj_t * ui_Leg3Label;
+extern lv_obj_t * ui_Leg1Status;
+extern lv_obj_t * ui_Leg2Status;
+extern lv_obj_t * ui_Leg3Status;
+extern lv_obj_t * ui_Leg4Status;
 // CUSTOM VARIABLES
-extern lv_obj_t * uic_Label5;
+extern lv_obj_t * uic_CurrentLeg;
+extern lv_obj_t * uic_ToolStatus;
 
 // EVENTS
 

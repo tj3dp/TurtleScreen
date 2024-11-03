@@ -14,12 +14,24 @@ void ui_Screen1_screen_init(void);
 lv_obj_t * ui_Screen1;
 lv_obj_t * ui_Container2;
 lv_obj_t * ui_Label4;
-lv_obj_t * ui_Label5;
+lv_obj_t * ui_CurrentLeg;
 lv_obj_t * ui_Panel1;
-lv_obj_t * ui_Label6;
-lv_obj_t * ui_Label7;
+lv_obj_t * ui_ToolLabel;
+lv_obj_t * ui_ToolStatus;
+lv_obj_t * ui_HubStatusLabel;
+lv_obj_t * ui_HubStatus;
+lv_obj_t * ui_Panel2;
+lv_obj_t * ui_Leg1Label;
+lv_obj_t * ui_Leg2Label;
+lv_obj_t * ui_Leg4Label;
+lv_obj_t * ui_Leg3Label;
+lv_obj_t * ui_Leg1Status;
+lv_obj_t * ui_Leg2Status;
+lv_obj_t * ui_Leg3Status;
+lv_obj_t * ui_Leg4Status;
 // CUSTOM VARIABLES
-lv_obj_t * uic_Label5;
+lv_obj_t * uic_CurrentLeg;
+lv_obj_t * uic_ToolStatus;
 
 // EVENTS
 lv_obj_t * ui____initial_actions0;
