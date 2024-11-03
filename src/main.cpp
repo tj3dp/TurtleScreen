@@ -2,6 +2,7 @@
 #include "wifi_manager.h"
 #include "api_fetch.h"
 #include "web_page.h"
+#include "lvgl_usr.h"
 
 
 void setup() {
@@ -17,10 +18,10 @@ void setup() {
         if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 3, NULL) != pdPASS) {
             Serial.println("Failed to create WiFi Connect Task");
         }
-        //xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, NULL);
+        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, NULL);
     } else {
         setupWiFiAP();
-       // xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, NULL);
+        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, NULL);
     }
 
 
