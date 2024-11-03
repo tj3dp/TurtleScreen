@@ -23,6 +23,8 @@ const char* booleanHelper(bool value){
 }
 
 void lvgl_set_current_leg(){
+    // This is buggy and returns garbage for some reason randomly on screen 
+    //Todo: fix this
     if(currentLoad != nullptr){
             if(lv_label_get_text(uic_CurrentLeg) == currentLoad) return;
             lv_label_set_text(uic_CurrentLeg, currentLoad);
