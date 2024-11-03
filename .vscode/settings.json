@@ -1,6 +1,7 @@
 {
     "files.associations": {
         "wifi_manager.h": "c",
-        "wifi.h": "c"
+        "wifi.h": "c",
+        "espasyncwebserver.h": "c"
     }
 }

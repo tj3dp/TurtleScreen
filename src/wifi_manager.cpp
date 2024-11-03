@@ -2,8 +2,11 @@
 #include <Preferences.h>
 #include <Update.h>
 
-
+const char* apSSID = "DeviceSetupAP";
+const char* apPassword = "setup1234";
 Preferences preferences;
+AsyncWebServer server(80);
+
 String targetSSID;
 String targetPassword;
 String targetHost;

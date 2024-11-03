@@ -1,15 +1,19 @@
 #ifndef WIFI_MANAGER_H
 #define WIFI_MANAGER_H
 
+#include <Preferences.h>
 #include <WiFi.h>
 #include <ESPAsyncWebServer.h>
 #include <HTTPClient.h>
 #include "api_fetch.h"
 
 
-extern const char* apSSID;
-extern const char* apPassword;
-extern AsyncWebServer server;
+extern const char* apSSID;          // SSID for AP
+extern const char* apPassword;      // Password for AP
+extern Preferences preferences;      // Extern declaration
+extern AsyncWebServer server;        // Extern declaration
+
+
 
 void setupWiFiAP();
 void connectToWiFiTask(void *pvParameters);
