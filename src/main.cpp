@@ -9,11 +9,9 @@ void setup() {
     delay(1000);
     Serial.println("Starting up... \n");
 
-    // Initialize Preferences and load saved credentials
     preferences.begin("wifi-config", false);
     loadCredentials();
 
-    // Check if saved Wi-Fi credentials exist
     if (!targetSSID.isEmpty() && !targetPassword.isEmpty()) {
         Serial.println("Connecting to saved Wi-Fi network");
         if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 3, NULL) != pdPASS) {
@@ -25,9 +23,8 @@ void setup() {
        // xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, NULL);
     }
 
-    // Configure web server endpoints
+
     server.on("/", HTTP_GET, [](AsyncWebServerRequest *request) {
-        // Serve the HTML page from the webpage_html constant
         request->send(200, "text/html", webpage_html);
     });
 
@@ -37,15 +34,12 @@ void setup() {
             targetPassword = request->getParam("password", true)->value();
             targetHost = request->getParam("host", true)->value();
 
-            // Save Wi-Fi credentials and target host to Preferences
             saveCredentials(targetSSID, targetPassword, targetHost);
             Serial.print("Host set as:");
 
-            // Build API URL with the provided IP/hostname
             apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
             Serial.println(apiURL);
 
-            // Start Wi-Fi connection task
             if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 3, NULL) != pdPASS) {
                 Serial.println("Failed to create WiFi Connect Task");
             }
@@ -57,9 +51,9 @@ void setup() {
         }
     });
 
-    server.begin(); // Start the server
+    server.begin(); 
 }
 
 void loop() {
-    // Nothing needed in the main loop; tasks are handling functionality
+    
 }
