@@ -5,8 +5,17 @@
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
 
+extern float eventTime;
+extern bool leg1Load;
+extern bool leg2Load;
+extern bool leg3Load;
+extern bool leg4Load;
+extern const char* currentLoad;
+extern bool toolLoaded;
+extern bool loadedToHub;
+
 void fetchDataTask(void *pvParameters);
-void parseApiResponse(const String& json);
+void ParseAPIResponse(const String& jsonResponse);
 
 extern String apiURL;
 
