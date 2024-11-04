@@ -22,8 +22,8 @@ const char* booleanHelper(bool value){
     return temp;
 }
 
-void lvgl_set_current_leg(){
-    if(currentLoadChanged == false) return;
+void lvgl_set_current_leg() {
+    if (currentLoadChanged == false) return;
     if (currentLoadBuffer != nullptr) {
         if (strlen(currentLoadBuffer) > 0) {
             const char *labelText = lv_label_get_text(uic_CurrentLeg);
@@ -32,18 +32,18 @@ void lvgl_set_current_leg(){
             }
         }
         currentLoadChanged = false;
-    }
-    else if (currentLoadBuffer == nullptr){
+    } 
+    else {
         const char *currentText = lv_label_get_text(uic_CurrentLeg);
-        if(strcmp(currentText, currentLoadBuffer) != 0){
+        if (strcmp(currentText, "None") != 0) {
             lv_label_set_text(uic_CurrentLeg, "None");
         }
+        currentLoadChanged = false;
     }
-    delayMicroseconds(5);
 }
 
 void lvgl_set_tool_status(){
-    const char *toolStatus = lv_label_get_text(uic_CurrentLeg);
+    const char *toolStatus = lv_label_get_text(uic_ToolStatus);
     if (strcmp(toolStatus, currentLoadBuffer) != 0){
         lv_label_set_text(uic_ToolStatus, booleanHelper(toolLoaded));
     }
@@ -94,12 +94,6 @@ void lvgl_ui_task(void * parameter) {
         lvgl_set_params();
         lv_timer_handler();
         delay(5);
-        static unsigned long lastHeapCheck = 0;
-            if (millis() - lastHeapCheck > 60000) {  // Check every 60 seconds
-                Serial.print("Free Heap: ");
-                Serial.println(ESP.getFreeHeap());  // Replace with appropriate heap function
-                lastHeapCheck = millis();
-            }
        }
 }
 

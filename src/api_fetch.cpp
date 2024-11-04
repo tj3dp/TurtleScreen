@@ -112,7 +112,7 @@ void ParseAPIResponse(const String& jsonResponse) {
             serializeJson(system, Serial);
             Serial.println(); 
 #endif
-            currentLoad = system["current_load"].as<const char*>();
+            /*currentLoad = system["current_load"].as<const char*>();
             if(currentLoad == nullptr){
                 if (currentLoadBuffer[0] != '\0') {
                     currentLoadBuffer[0] = '\0';
@@ -130,7 +130,24 @@ void ParseAPIResponse(const String& jsonResponse) {
                     currentLoadChanged = false;
                 }
 
-            }
+            }*/
+           //
+            currentLoadChanged = false;
+            currentLoad = system["current_load"].as<const char*>();
+
+            if (currentLoad == nullptr) {
+                if (currentLoadBuffer[0] != '\0') {
+                        currentLoadBuffer[0] = '\0';
+                        currentLoadChanged = true;
+                }
+            } else {
+            if (strcmp(currentLoadBuffer, currentLoad) != 0) {
+            strncpy(currentLoadBuffer, currentLoad, sizeof(currentLoadBuffer) - 1);
+            currentLoadBuffer[sizeof(currentLoadBuffer) - 1] = '\0';
+            currentLoadChanged = true;
+            //
+    }
+}
             
             toolLoaded = system["tool_loaded"];
             loadedToHub = system["hub_loaded"];  

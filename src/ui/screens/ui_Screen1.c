@@ -33,7 +33,8 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_x(ui_CurrentLeg, 0);
     lv_obj_set_y(ui_CurrentLeg, 6);
     lv_obj_set_align(ui_CurrentLeg, LV_ALIGN_CENTER);
-    lv_label_set_text(ui_CurrentLeg, "Leg2");
+    lv_label_set_text(ui_CurrentLeg, "None");
+    lv_label_set_recolor(ui_CurrentLeg, "true");
 
     ui_Panel1 = lv_obj_create(ui_Screen1);
     lv_obj_set_width(ui_Panel1, 195);
@@ -111,7 +112,7 @@ void ui_Screen1_screen_init(void)
     lv_obj_set_x(ui_Leg1Status, 10);
     lv_obj_set_y(ui_Leg1Status, 0);
     lv_obj_set_align(ui_Leg1Status, LV_ALIGN_TOP_RIGHT);
-    lv_label_set_text(ui_Leg1Status, "Loaded");
+    lv_label_set_text(ui_Leg1Status, "Unloaded");
 
     ui_Leg2Status = lv_label_create(ui_Panel2);
     lv_obj_set_width(ui_Leg2Status, LV_SIZE_CONTENT);   /// 1

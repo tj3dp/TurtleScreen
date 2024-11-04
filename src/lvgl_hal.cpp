@@ -161,5 +161,5 @@ void lvgl_hal_init(void) {
 
     /* set background color to black (default white) */
     lv_obj_set_style_bg_color(lv_scr_act(), LV_COLOR_MAKE(0, 0, 0), LV_STATE_DEFAULT);
-    Serial.println("Finished LVGL startup\n");
+    Serial.println("Finished LVGL startup");
 }
