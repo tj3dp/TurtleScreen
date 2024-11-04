@@ -9,6 +9,7 @@ bool leg4Load;
 const char* currentLoad;  
 bool toolLoaded; 
 bool loadedToHub;
+bool currentLoadChanged;
 char currentLoadBuffer[32] = "";
 
 void fetchDataTask(void *pvParameters) {
@@ -37,7 +38,7 @@ void fetchDataTask(void *pvParameters) {
         } else {
             Serial.println("Wi-Fi not connected or API URL not set");
         }
-        delay(1750);  // Fetch data every 1 seconds
+        delay(150);  // Fetch data every 1 seconds
     }
 }
 
@@ -112,7 +113,25 @@ void ParseAPIResponse(const String& jsonResponse) {
             Serial.println(); 
 #endif
             currentLoad = system["current_load"].as<const char*>();
-            strncpy(currentLoadBuffer, system["current_load"].as<const char*>(), sizeof(currentLoadBuffer)-1);
+            if(currentLoad == nullptr){
+                if (currentLoadBuffer[0] != '\0') {
+                    currentLoadBuffer[0] = '\0';
+                    currentLoadChanged = true;
+                } else {
+                    currentLoadChanged = false;
+                }
+            }
+            else{
+                if(strcmp(currentLoadBuffer, currentLoad) != 0){
+                    strncpy(currentLoadBuffer, currentLoad, sizeof(currentLoadBuffer)-1);
+                    currentLoadBuffer[sizeof(currentLoadBuffer) - 1] = '\0';
+                    currentLoadChanged = true;
+                } else {
+                    currentLoadChanged = false;
+                }
+
+            }
+            
             toolLoaded = system["tool_loaded"];
             loadedToHub = system["hub_loaded"];  
 

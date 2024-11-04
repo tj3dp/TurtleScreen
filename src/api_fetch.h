@@ -14,6 +14,7 @@ extern const char* currentLoad;
 extern char currentLoadBuffer[32];
 extern bool toolLoaded;
 extern bool loadedToHub;
+extern bool currentLoadChanged;
 
 void fetchDataTask(void *pvParameters);
 void ParseAPIResponse(const String& jsonResponse);

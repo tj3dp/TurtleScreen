@@ -23,6 +23,7 @@ const char* booleanHelper(bool value){
 }
 
 void lvgl_set_current_leg(){
+    if(currentLoadChanged == false) return;
     if (currentLoadBuffer != nullptr) {
         if (strlen(currentLoadBuffer) > 0) {
             const char *labelText = lv_label_get_text(uic_CurrentLeg);
