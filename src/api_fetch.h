@@ -11,6 +11,7 @@ extern bool leg2Load;
 extern bool leg3Load;
 extern bool leg4Load;
 extern const char* currentLoad;
+extern char currentLoadBuffer[32];
 extern bool toolLoaded;
 extern bool loadedToHub;
 

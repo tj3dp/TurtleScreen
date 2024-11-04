@@ -23,14 +23,15 @@ const char* booleanHelper(bool value){
 }
 
 void lvgl_set_current_leg(){
-    if (currentLoad != nullptr) {
-        if (strlen(currentLoad) > 0) {
+    if (currentLoadBuffer != nullptr) {
+        if (strlen(currentLoadBuffer) > 0) {
             const char *labelText = lv_label_get_text(uic_CurrentLeg);
-            if (strcmp(labelText, currentLoad) != 0) {
-                lv_label_set_text(uic_CurrentLeg, currentLoad);
+            if (strcmp(labelText, currentLoadBuffer) != 0) {
+                lv_label_set_text(uic_CurrentLeg, currentLoadBuffer);
             }
         }
     }
+    delayMicroseconds(5);
 }
 
 void lvgl_set_tool_status(){
@@ -49,7 +50,7 @@ void lvgl_set_leg_status(){
 }
 
 void lvgl_set_current_color(){
-
+    
 }
 
 void lvgl_set_params(){

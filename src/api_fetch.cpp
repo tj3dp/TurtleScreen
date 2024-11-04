@@ -9,19 +9,22 @@ bool leg4Load;
 const char* currentLoad;  
 bool toolLoaded; 
 bool loadedToHub;
+char currentLoadBuffer[32] = "";
 
 void fetchDataTask(void *pvParameters) {
     while (true) {
         if (WiFi.status() == WL_CONNECTED && !apiURL.isEmpty()) {
+            #ifdef DEBUGOUTPUT
             Serial.print("Trying to grab API data \n");
+            #endif
             HTTPClient http;
             http.begin(apiURL);
             int httpResponseCode = http.GET();
 
             if (httpResponseCode == 200) {
                 String payload = http.getString();
-                Serial.println("Received data:");
                 #ifdef DEBUGOUTPUT
+                Serial.println("Received data:");
                 Serial.println(payload);
                 #endif
                 // Parse JSON data
@@ -34,12 +37,14 @@ void fetchDataTask(void *pvParameters) {
         } else {
             Serial.println("Wi-Fi not connected or API URL not set");
         }
-        delay(30000);  // Fetch data every 30 seconds
+        delay(1750);  // Fetch data every 1 seconds
     }
 }
 
 void ParseAPIResponse(const String& jsonResponse) {
+    #ifdef DEBUGOUTPUT
     Serial.println("Running API Parse");
+    #endif
     DynamicJsonDocument doc(1024); 
     DeserializationError error = deserializeJson(doc, jsonResponse);
 
@@ -107,6 +112,7 @@ void ParseAPIResponse(const String& jsonResponse) {
             Serial.println(); 
 #endif
             currentLoad = system["current_load"].as<const char*>();
+            strncpy(currentLoadBuffer, system["current_load"].as<const char*>(), sizeof(currentLoadBuffer)-1);
             toolLoaded = system["tool_loaded"];
             loadedToHub = system["hub_loaded"];  
 
@@ -129,7 +135,7 @@ void ParseAPIResponse(const String& jsonResponse) {
     } else {
         Serial.println("AFC key not found in status.");
     }
-
+#ifdef DEBUGOUTPUT
     Serial.print("Lane 1 Status: "); Serial.println(leg1Load);
     Serial.print("Lane 2 Status: "); Serial.println(leg2Load);
     Serial.print("Lane 3 Status: "); Serial.println(leg3Load);
@@ -137,5 +143,6 @@ void ParseAPIResponse(const String& jsonResponse) {
     Serial.print("Tool Status: "); Serial.println(toolLoaded ? "true" : "false");
     Serial.print("Hub Status: "); Serial.println(loadedToHub ? "true" : "false");
     Serial.print("Current Load: "); Serial.println(currentLoad);
+    #endif
 }
 
