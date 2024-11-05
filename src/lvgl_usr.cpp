@@ -96,7 +96,7 @@ void lvgl_ui_task(void * parameter) {
         lvgl_set_params();
         lv_timer_handler();
         lastLvglUpdate = xTaskGetTickCount();
-        delay(5);
+        vTaskDelay(pdMS_TO_TICKS(5));
        }
 }
 

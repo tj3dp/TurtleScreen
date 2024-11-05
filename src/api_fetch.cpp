@@ -40,7 +40,7 @@ void fetchDataTask(void *pvParameters) {
             Serial.println("Wi-Fi not connected or API URL not set");
         }
         lastApiUpdate = xTaskGetTickCount();
-        delay(150);  // Fetch data every 1 seconds
+        vTaskDelay(pdMS_TO_TICKS(150));
     }
 }
 
