@@ -10,6 +10,7 @@ AsyncWebServer server(80);
 String targetSSID;
 String targetPassword;
 String targetHost;
+TaskHandle_t WifITaskHandle = NULL;
 
 void setupWiFiAP() {
     WiFi.softAP(apSSID, apPassword);

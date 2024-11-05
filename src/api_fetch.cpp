@@ -11,6 +11,7 @@ bool toolLoaded;
 bool loadedToHub;
 bool currentLoadChanged;
 char currentLoadBuffer[32] = "";
+uint32_t lastApiUpdate;
 
 void fetchDataTask(void *pvParameters) {
     while (true) {
@@ -38,6 +39,7 @@ void fetchDataTask(void *pvParameters) {
         } else {
             Serial.println("Wi-Fi not connected or API URL not set");
         }
+        lastApiUpdate = xTaskGetTickCount();
         delay(150);  // Fetch data every 1 seconds
     }
 }

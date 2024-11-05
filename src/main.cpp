@@ -3,7 +3,10 @@
 #include "api_fetch.h"
 #include "web_page.h"
 #include "lvgl_usr.h"
+#include "watchdog.h"
 
+TaskHandle_t lvglUiTaskHandle = NULL;
+TaskHandle_t apiFetchTaskHandle = NULL;
 
 void setup() {
     Serial.begin(115200);
@@ -18,10 +21,10 @@ void setup() {
         if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 3, NULL) != pdPASS) {
             Serial.println("Failed to create WiFi Connect Task");
         }
-        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, NULL);
+        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, &lvglUiTaskHandle);
     } else {
         setupWiFiAP();
-        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, NULL);
+        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, &lvglUiTaskHandle);
     }
 
 
@@ -41,10 +44,11 @@ void setup() {
             apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
             Serial.println(apiURL);
 
-            if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 3, NULL) != pdPASS) {
+            if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 3, &WifITaskHandle) != pdPASS) {
                 Serial.println("Failed to create WiFi Connect Task");
             }
-            xTaskCreate(fetchDataTask, "Data Fetch Task", 4096, NULL, 2, NULL);
+            xTaskCreate(fetchDataTask, "Data Fetch Task", 4096, NULL, 2, &apiFetchTaskHandle);
+            xTaskCreate(watchdog_task, "WatchdogTask", 2048, NULL, 1, NULL);
 
             request->send(200, "text/plain", "Configuration saved. Connecting to Wi-Fi...");
         } else {

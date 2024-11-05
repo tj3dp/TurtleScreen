@@ -8,6 +8,8 @@
 
 void lv_popup_warning(const char * warning, bool clickable);
 void lv_popup_remove(lv_event_t * e) ;
+uint32_t lastLvglUpdate;
+
 
 const char* booleanHelper(bool value){
     const char* temp;
@@ -93,6 +95,7 @@ void lvgl_ui_task(void * parameter) {
        for(;;) {
         lvgl_set_params();
         lv_timer_handler();
+        lastLvglUpdate = xTaskGetTickCount();
         delay(5);
        }
 }

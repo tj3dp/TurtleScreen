@@ -20,5 +20,7 @@ void fetchDataTask(void *pvParameters);
 void ParseAPIResponse(const String& jsonResponse);
 
 extern String apiURL;
+extern TaskHandle_t apiFetchTaskHandle;
+extern uint32_t lastApiUpdate;
 
 #endif // API_FETCH_H

@@ -12,6 +12,7 @@ extern const char* apSSID;          // SSID for AP
 extern const char* apPassword;      // Password for AP
 extern Preferences preferences;      // Extern declaration
 extern AsyncWebServer server;        // Extern declaration
+extern TaskHandle_t WifITaskHandle;
 
 
 
