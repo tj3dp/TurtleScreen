@@ -1,10 +1,4 @@
-#include <stdio.h> // sprintf
-#include <Arduino.h>
-#include "lvgl_hal.h"
 #include "lvgl_usr.h"
-#include "ui/ui.h"
-#include "api_fetch.h"
-
 
 void lv_popup_warning(const char * warning, bool clickable);
 void lv_popup_remove(lv_event_t * e) ;

@@ -3,6 +3,7 @@
 #include "api_fetch.h"
 #include "web_page.h"
 #include "lvgl_usr.h"
+#include "moonraker.h"
 #include "watchdog.h"
 
 TaskHandle_t lvglUiTaskHandle = NULL;
@@ -18,13 +19,14 @@ void setup() {
 
     if (!targetSSID.isEmpty() && !targetPassword.isEmpty()) {
         Serial.println("Connecting to saved Wi-Fi network");
-        if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 3, NULL) != pdPASS) {
+        if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 8, NULL) != pdPASS) {
             Serial.println("Failed to create WiFi Connect Task");
         }
-        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, &lvglUiTaskHandle);
+        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 10, &lvglUiTaskHandle);
+        xTaskCreate(moonraker_task, "MoonRakerTask", 4096, NULL, 7, NULL);
     } else {
         setupWiFiAP();
-        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 1, &lvglUiTaskHandle);
+        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 10, &lvglUiTaskHandle);
     }
 
 
@@ -44,11 +46,12 @@ void setup() {
             apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
             Serial.println(apiURL);
 
-            if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 3, &WifITaskHandle) != pdPASS) {
+            if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 8, &WifITaskHandle) != pdPASS) {
                 Serial.println("Failed to create WiFi Connect Task");
             }
             xTaskCreate(fetchDataTask, "Data Fetch Task", 4096, NULL, 2, &apiFetchTaskHandle);
-            xTaskCreate(watchdog_task, "WatchdogTask", 2048, NULL, 1, NULL);
+            xTaskCreate(watchdog_task, "WatchdogTask", 2048, NULL, 9, NULL);
+            xTaskCreate(moonraker_task, "MoonRakerTask", 4096, NULL, 7, NULL);
 
             request->send(200, "text/plain", "Configuration saved. Connecting to Wi-Fi...");
         } else {
