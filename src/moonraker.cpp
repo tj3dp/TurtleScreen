@@ -363,15 +363,6 @@ void moonraker_task(void *parameter)
                 6,              // Task priority
                 &postTaskHandle // Task handle
     );
-    for (;;)
-    {
-        if (WiFi.status() == WL_CONNECTED && !targetHost.isEmpty())
-        {
-            moonraker.http_get_loop();
-        }
-        lastMoonRakerUpdate = xTaskGetTickCount();
-        vTaskDelay(pdMS_TO_TICKS(150));
-    }
 }
 
 // Klipper Control: Restart Firmware Restart. /printer/restart, /printer/firmware_restart

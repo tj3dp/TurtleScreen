@@ -4,6 +4,7 @@
 #include <Arduino.h>
 #include <HTTPClient.h>
 #include <ArduinoJson.h>
+#include "moonraker.h"
 
 extern float eventTime;
 extern bool leg1Load;

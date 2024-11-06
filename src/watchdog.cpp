@@ -53,11 +53,6 @@ void watchdog_task(void *param) {
             lastLvglUpdate = xTaskGetTickCount();
         }
 
-        if (xTaskGetTickCount() - lastMoonRakerUpdate > pdMS_TO_TICKS(10000)) { 
-            restartMoonRakerTask();
-            lastMoonRakerUpdate = xTaskGetTickCount();
-        }
-
         if (xTaskGetTickCount() - lastPostUpdate > pdMS_TO_TICKS(10000)) { 
             restartPostTask();
             lastPostUpdate = xTaskGetTickCount();

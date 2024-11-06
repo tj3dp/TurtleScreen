@@ -42,6 +42,11 @@ void fetchDataTask(void *pvParameters)
                 Serial.println(httpResponseCode);
             }
             http.end();
+            moonraker.get_printer_ready();
+            if(!moonraker.unready){
+                moonraker.get_AFC_status();
+                moonraker.get_printer_info();
+            }
         }
         else
         {

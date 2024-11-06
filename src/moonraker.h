@@ -60,8 +60,6 @@ class MOONRAKER {
         bool post_to_queue(String path);
         bool post_gcode_to_queue(String gcode);
         String send_request(const char * type, String path);
-
-    private:
         post_queue_t post_queue;
         void get_printer_ready(void);
         void get_printer_info(void);
