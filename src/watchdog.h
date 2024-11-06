@@ -6,6 +6,7 @@
 #include "lvgl_usr.h"
 #include "projdefs.h"
 #include "lvgl_hal.h"
+#include "moonraker.h"
 
 
 void watchdog_task(void *parameters);

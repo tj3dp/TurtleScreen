@@ -13,15 +13,29 @@ void restartApiTask() {
     if (apiFetchTaskHandle != NULL) {
         vTaskDelete(apiFetchTaskHandle);
     }
-    xTaskCreate(fetchDataTask, "API Fetch Task", 4096, NULL, 1, &apiFetchTaskHandle);
+    xTaskCreate(fetchDataTask, "API Fetch Task", 4096, NULL, 8, &apiFetchTaskHandle);
 }
 
 void restartLvglTask() {
     if (lvglUiTaskHandle != NULL) {
         vTaskDelete(lvglUiTaskHandle);
     }
-    xTaskCreate(lvgl_ui_task, "LVGL UI Task", 4096, NULL, 1, &lvglUiTaskHandle);
+    xTaskCreate(lvgl_ui_task, "LVGL UI Task", 4096, NULL, 10, &lvglUiTaskHandle);
 }
+
+void restartMoonRakerTask() {
+    if (moonrakerTaskHandle != NULL) {
+        vTaskDelete(moonrakerTaskHandle);
+    }
+    xTaskCreate(moonraker_task, "moonraker task", 4096, NULL, 7, &moonrakerTaskHandle);
+}
+void restartPostTask() {
+    if (postTaskHandle != NULL) {
+        vTaskDelete(postTaskHandle);
+    }
+    xTaskCreate(moonraker_post_task, "moonraker post", 4096, NULL, 6, &postTaskHandle);
+}
+
 
 
 void watchdog_task(void *param) {
@@ -37,6 +51,16 @@ void watchdog_task(void *param) {
         if (xTaskGetTickCount() - lastLvglUpdate > pdMS_TO_TICKS(10000)) { 
             restartLvglTask();
             lastLvglUpdate = xTaskGetTickCount();
+        }
+
+        if (xTaskGetTickCount() - lastMoonRakerUpdate > pdMS_TO_TICKS(10000)) { 
+            restartMoonRakerTask();
+            lastMoonRakerUpdate = xTaskGetTickCount();
+        }
+
+        if (xTaskGetTickCount() - lastPostUpdate > pdMS_TO_TICKS(10000)) { 
+            restartPostTask();
+            lastPostUpdate = xTaskGetTickCount();
         }
 
         vTaskDelay(pdMS_TO_TICKS(1000));

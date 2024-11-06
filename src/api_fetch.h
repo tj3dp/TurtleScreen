@@ -18,6 +18,7 @@ extern bool currentLoadChanged;
 
 void fetchDataTask(void *pvParameters);
 void ParseAPIResponse(const String& jsonResponse);
+extern  HTTPClient http;
 
 extern String apiURL;
 extern TaskHandle_t apiFetchTaskHandle;

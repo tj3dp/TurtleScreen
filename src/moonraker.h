@@ -14,6 +14,11 @@
 // } moonraker_status_t;
 
 void moonraker_task(void * parameter);
+void moonraker_post_task(void * parameter);
+extern TaskHandle_t moonrakerTaskHandle;
+extern TaskHandle_t postTaskHandle;
+extern uint32_t lastMoonRakerUpdate;
+extern uint32_t lastPostUpdate;
 
 typedef struct {
     int16_t bed_actual;
@@ -30,6 +35,10 @@ typedef struct {
     bool qgling;
     bool heating_nozzle;
     bool heating_bed;
+
+
+    bool changing_lanes;
+
 } moonraker_data_t;
 
 #define QUEUE_LEN 5
@@ -57,7 +66,7 @@ class MOONRAKER {
         void get_printer_ready(void);
         void get_printer_info(void);
         void get_progress(void);
-        void get_T3_status(void);
+        void get_AFC_status(void);
 };
 
 extern MOONRAKER moonraker;
