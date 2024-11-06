@@ -11,7 +11,7 @@ extern "C" {
 #endif
 
 #include "../../lib/lvgl/lvgl.h"
-
+#include "../ui_functions.h"
 #include "ui_helpers.h"
 #include "ui_events.h"
 
@@ -36,13 +36,61 @@ extern lv_obj_t * ui_Leg1Status;
 extern lv_obj_t * ui_Leg2Status;
 extern lv_obj_t * ui_Leg3Status;
 extern lv_obj_t * ui_Leg4Status;
+void ui_event_Button1(lv_event_t * e);
+extern lv_obj_t * ui_Button1;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_CurrentLeg;
 extern lv_obj_t * uic_ToolStatus;
 
+// SCREEN: ui_Screen2
+void ui_Screen2_screen_init(void);
+extern lv_obj_t * ui_Screen2;
+extern lv_obj_t * ui_Panel3;
+extern lv_obj_t * ui_Box;
+void ui_event_Tool0Button(lv_event_t * e);
+void ui_event_Tool1Button(lv_event_t * e);
+void ui_event_Tool2Button(lv_event_t * e);
+void ui_event_Tool3Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool0Button;
+extern lv_obj_t * ui_Tool1Button;
+extern lv_obj_t * ui_Tool2Button;
+extern lv_obj_t * ui_Tool3Button;
+void ui_event_Button6(lv_event_t * e);
+extern lv_obj_t * ui_Button6;
+extern lv_obj_t * ui_Panel4;
+extern lv_obj_t * ui_Image1;
+extern lv_obj_t * ui_CurrentNozzleTemp;
+// CUSTOM VARIABLES
+extern lv_obj_t * uic_Tool0Button;
+extern lv_obj_t * uic_Tool1Button;
+extern lv_obj_t * uic_Tool2Button;
+extern lv_obj_t * uic_Tool3Button;
+extern lv_obj_t * uic_CurrentNozzleTemp;
+
 // EVENTS
 
 extern lv_obj_t * ui____initial_actions0;
+
+// IMAGES AND IMAGE SETS
+LV_IMG_DECLARE(ui_img_spoolman_png);    // assets/spoolman.png
+LV_IMG_DECLARE(ui_img_642937331);    // assets/extruder-0.png
+LV_IMG_DECLARE(ui_img_642936306);    // assets/extruder-1.png
+LV_IMG_DECLARE(ui_img_642943729);    // assets/extruder-2.png
+LV_IMG_DECLARE(ui_img_642942704);    // assets/extruder-3.png
+LV_IMG_DECLARE(ui_img_1470730272);    // assets/arrow-left.png
+LV_IMG_DECLARE(ui_img_filament_png);    // assets/filament.png
+LV_IMG_DECLARE(ui_img_922480046);    // assets/2602507-200.png
+LV_IMG_DECLARE(ui_img_539412392);    // assets/extruder-10.png
+LV_IMG_DECLARE(ui_img_542316787);    // assets/extruder-11.png
+LV_IMG_DECLARE(ui_img_642941679);    // assets/extruder-4.png
+LV_IMG_DECLARE(ui_img_642940654);    // assets/extruder-5.png
+LV_IMG_DECLARE(ui_img_642948077);    // assets/extruder-6.png
+LV_IMG_DECLARE(ui_img_642947052);    // assets/extruder-7.png
+LV_IMG_DECLARE(ui_img_642946043);    // assets/extruder-8.png
+LV_IMG_DECLARE(ui_img_642945018);    // assets/extruder-9.png
+LV_IMG_DECLARE(ui_img_print_bar1_png);    // assets/print_bar1.png
+LV_IMG_DECLARE(ui_img_print_bar2_png);    // assets/print_bar2.png
+LV_IMG_DECLARE(barfturtle);
 
 // UI INIT
 void ui_init(void);
