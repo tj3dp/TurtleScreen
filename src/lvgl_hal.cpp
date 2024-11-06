@@ -5,6 +5,8 @@ lv_obj_t *ui_cartext = NULL;
 static lv_disp_draw_buf_t draw_buf;
 static lv_color_t *buf;
 static lv_color_t *buf1;
+static bool hw_setup = false;
+
 void usr_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
     uint32_t w = (area->x2 - area->x1 + 1);
     uint32_t h = (area->y2 - area->y1 + 1);
@@ -106,6 +108,7 @@ void tft_set_backlight(int8_t aw9346_to_light) {
 
 lv_indev_t * ts_cst816s_indev;
 void lvgl_hal_init(void) {
+    if(!hw_setup){
     pinMode(TOUCH_RES, OUTPUT);
     digitalWrite(TOUCH_RES, HIGH);delay(2);
     digitalWrite(TOUCH_RES, LOW);delay(10);
@@ -117,7 +120,8 @@ void lvgl_hal_init(void) {
     digitalWrite(LCD_BL_PIN , HIGH);
 
     axs15231_init();
-
+    hw_setup = true;
+    }
 
         lv_init();
     size_t buffer_size =

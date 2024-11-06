@@ -71,6 +71,14 @@ void lvgl_set_leg_status(){
     }
 }
 
+void lvgl_set_nozzle_temp(){
+    if(moonraker.data.nozzle_actual != atoi(lv_label_get_text(ui_CurrentNozzleTemp))){
+        char buffer[12];
+        sprintf(buffer, "%d", moonraker.data.nozzle_actual);
+        lv_label_set_text(ui_CurrentNozzleTemp, buffer);
+    }
+}
+
 void lvgl_set_current_color(){
     
 }
@@ -80,6 +88,7 @@ void lvgl_set_params(){
         lvgl_set_tool_status();
         lvgl_set_hub_status();
         lvgl_set_leg_status();
+        lvgl_set_nozzle_temp();
         
 }
 
