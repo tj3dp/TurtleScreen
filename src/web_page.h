@@ -17,4 +17,14 @@ const char webpage_html[] = R"rawliteral(
 </body></html>
 )rawliteral";
 
+const char upload_html[] = R"rawliteral(
+<html><body>
+    <form method="POST" action="/update" enctype="multipart/form-data">
+        <label for="firmware">Upload Firmware:</label>
+        <input type="file" name="firmware">
+        <input type="submit" value="Upload">
+    </form>
+</body></html>
+)rawliteral";
+
 #endif // WEB_PAGE_H
