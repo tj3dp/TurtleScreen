@@ -11,7 +11,7 @@ This project uses a Lilygo T3 OLED long screen to display real-time information 
 ## Getting Started
 
 ### Hardware Requirements
-- Lilygo T3 OLED Long Screen
+- Lilygo T3 OLED Long Screen - https://www.lilygo.cc/products/t-display-s3-long
 - 3D-printed adapter (STL files included in the repository for printing)
 
 ### Software Requirements
