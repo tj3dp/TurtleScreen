@@ -104,7 +104,7 @@ void connectToWiFiTask(void *pvParameters)
     int retryCount = 0;
     while (WiFi.status() != WL_CONNECTED && retryCount < 10)
     {
-        Serial.print(".");
+        Serial.println(".");
         retryCount++;
         delay(1000);
     }
