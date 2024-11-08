@@ -27,6 +27,10 @@ jobs:
       - name: Compile with PlatformIO
         run: pio run
 
+      - name: List directory contents for debugging
+        run: |
+          ls -R .pio/build/
+
       - name: Upload binary as artifact
         uses: actions/upload-artifact@v3
         with:
@@ -35,19 +39,23 @@ jobs:
 
   release:
     needs: build  # Ensures this job runs after 'build'
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Change to 'windows-latest' if needed
     steps:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
           name: firmware-bin
-          path: ./  # Download artifact to current directory
+          path: ./downloaded  # Save the artifact into a specific folder
+
+      - name: List downloaded contents for debugging
+        run: |
+          ls -R ./downloaded
 
       - name: Create GitHub Release
         id: create_release
         uses: actions/create-release@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.SECRET }}
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           tag_name: ${{ github.ref_name }}
           release_name: Release ${{ github.ref_name }}
@@ -58,9 +66,9 @@ jobs:
       - name: Upload binary to release
         uses: actions/upload-release-asset@v1
         env:
-          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+          GITHUB_TOKEN: ${{ secrets.SECRET }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./firmware.bin  
+          asset_path: ./downloaded/*.bin  # Ensure we reference the correct location
           asset_name: firmware-${{ github.ref_name }}.bin
           asset_content_type: application/octet-stream
