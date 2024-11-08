@@ -1,3 +1,7 @@
+permissions:
+  contents: read  # Read access to the repository contents
+  id-token: write  # Write access to create releases and upload assets
+
 name: Build and Release on Tag
 
 on:
@@ -69,6 +73,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.SECRET }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./downloaded/*.bin  # Ensure we reference the correct location
+          asset_path: ./downloaded/TDisplay/firmware.bin  # Ensure we reference the correct location
           asset_name: firmware-${{ github.ref_name }}.bin
           asset_content_type: application/octet-stream
