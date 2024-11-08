@@ -1,5 +1,4 @@
 //#define DEBUG_OUTPUT
-
 #ifdef DEBUG_OUTPUT
     #define DEBUG_PRINT(x)    Serial.print(x)
     #define DEBUG_PRINTLN(x)  Serial.println(x)
