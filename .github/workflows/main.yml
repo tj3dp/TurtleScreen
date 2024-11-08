@@ -1,9 +1,10 @@
-name: Build on Tag
+name: Build and Release on Tag
 
 on:
   push:
     tags:
       - 'V*'  # Trigger on tags that start with "V"
+  workflow_dispatch:
 
 jobs:
   build:
@@ -25,3 +26,41 @@ jobs:
 
       - name: Compile with PlatformIO
         run: pio run
+
+      - name: Upload binary as artifact
+        uses: actions/upload-artifact@v3
+        with:
+          name: compiled-binary
+          path: '**/*.bin'  # Adjust path if necessary
+
+  release:
+    needs: build  # Ensures this job runs after 'build'
+    runs-on: ubuntu-latest
+    steps:
+      - name: Download artifact
+        uses: actions/download-artifact@v3
+        with:
+          name: compiled-binary
+          path: ./  # Download artifact to current directory
+
+      - name: Create GitHub Release
+        id: create_release
+        uses: actions/create-release@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref_name }}
+          release_name: Release ${{ github.ref_name }}
+          body: "Automated release for version ${{ github.ref_name }}."
+          draft: false
+          prerelease: false
+
+      - name: Upload binary to release
+        uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create_release.outputs.upload_url }}
+          asset_path: ./*.bin
+          asset_name: firmware-${{ github.ref_name }}.bin
+          asset_content_type: application/octet-stream
