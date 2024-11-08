@@ -111,10 +111,6 @@ void lvgl_set_nozzle_temp(){
     }
 }
 
-void lvgl_set_current_color(){
-    
-}
-
 void lvgl_set_params(){
         lvgl_set_current_leg();
         lvgl_set_tool_status();
