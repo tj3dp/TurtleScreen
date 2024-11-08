@@ -32,12 +32,12 @@ String MOONRAKER::send_request(const char *type, String path)
         {
             if (!response.isEmpty())
             {
-                // Serial.println(response.c_str());
+                // DEBUG_PRINTLN(response.c_str());
                 DynamicJsonDocument json_parse(response.length() * 2);
                 deserializeJson(json_parse, response);
                 String msg = json_parse["error"]["message"].as<String>();
 #ifdef MOONRAKER_DEBUG
-                Serial.println(msg.c_str());
+                DEBUG_PRINTLN(msg.c_str());
 #endif
                 msg.remove(0, 41);               //  remove header {'error': 'WebRequestError', 'message':
                 msg.remove(msg.length() - 2, 2); // remove tail }
@@ -55,14 +55,14 @@ String MOONRAKER::send_request(const char *type, String path)
          */
         if (strcmp(type, "GET") == 0)
             unconnected = true;
-        Serial.printf("moonraker http %s error.\r\n", type);
+        DEBUG_PRINTF("moonraker http %s error.\r\n", type);
     }
     client.end(); // Free the resources
 
 #ifdef MOONRAKER_DEBUG
-    Serial.printf("\r\n\r\n %s code:%d************ %s *******************\r\n\r\n", type, code, url.c_str());
-    Serial.println(response.c_str());
-    Serial.println("\r\n*******************************\r\n\r\n");
+    DEBUG_PRINTF("\r\n\r\n %s code:%d************ %s *******************\r\n\r\n", type, code, url.c_str());
+    DEBUG_PRINTLN(response.c_str());
+    DEBUG_PRINTLN("\r\n*******************************\r\n\r\n");
 #endif
 
     return response;
@@ -81,21 +81,21 @@ bool MOONRAKER::post_to_queue(String path)
 {
     if (post_queue.count >= QUEUE_LEN)
     {
-        Serial.println("moonraker post queue overflow!");
+        DEBUG_PRINTLN("moonraker post queue overflow!");
         return false;
     }
     post_queue.queue[post_queue.index_w] = path;
     post_queue.index_w = (post_queue.index_w + 1) % QUEUE_LEN;
     post_queue.count++;
 #ifdef MOONRAKER_DEBUG
-    Serial.printf("\r\n\r\n ************ post queue *******************\r\n\r\n");
-    Serial.print("count: ");
-    Serial.println(post_queue.count);
-    Serial.print("index_w: ");
-    Serial.println(post_queue.index_w);
-    Serial.print("queue: ");
-    Serial.println(path);
-    Serial.println("\r\n*******************************\r\n\r\n");
+    DEBUG_PRINTF("\r\n\r\n ************ post queue *******************\r\n\r\n");
+    DEBUG_PRINT("count: ");
+    DEBUG_PRINTLN(post_queue.count);
+    DEBUG_PRINT("index_w: ");
+    DEBUG_PRINTLN(post_queue.index_w);
+    DEBUG_PRINT("queue: ");
+    DEBUG_PRINTLN(path);
+    DEBUG_PRINTLN("\r\n*******************************\r\n\r\n");
 #endif
     return true;
 }
@@ -120,21 +120,21 @@ void MOONRAKER::get_printer_ready(void)
             DeserializationError error = deserializeJson(json_parse, webhooks);
             if (error)
                 {
-                    Serial.print("Failed to parse JSON: ");
-                    Serial.println(error.f_str());
+                    DEBUG_PRINT("Failed to parse JSON: ");
+                    DEBUG_PRINTLN(error.f_str());
                     return;
                 }
             String state = json_parse["result"]["status"]["webhooks"]["state"].as<String>();
             unready = (state == "ready") ? false : true;
 #ifdef MOONRAKER_DEBUG
-            Serial.print("unready: ");
-            Serial.println(unready);
+            DEBUG_PRINT("unready: ");
+            DEBUG_PRINTLN(unready);
 #endif
         }
         else
         {
             unready = true;
-            Serial.println("Empty: moonraker: get_printer_ready");
+            DEBUG_PRINTLN("Empty: moonraker: get_printer_ready");
         }
     }
 }
@@ -160,23 +160,23 @@ void MOONRAKER::get_printer_info(void)
             data.nozzle_actual = int16_t(json_parse["temperature"]["tool0"]["actual"].as<double>() + 0.5f);
             data.nozzle_target = int16_t(json_parse["temperature"]["tool0"]["target"].as<double>() + 0.5f);
 #ifdef MOONRAKER_DEBUG
-            // Serial.print("unoperational: ");
-            // Serial.println(unoperational);
-            Serial.print("printing: ");
-            Serial.println(data.printing);
-            Serial.print("bed_actual: ");
-            Serial.println(data.bed_actual);
-            Serial.print("bed_target: ");
-            Serial.println(data.bed_target);
-            Serial.print("nozzle_actual: ");
-            Serial.println(data.nozzle_actual);
-            Serial.print("nozzle_target: ");
-            Serial.println(data.nozzle_target);
+            // DEBUG_PRINT("unoperational: ");
+            // DEBUG_PRINTLN(unoperational);
+            DEBUG_PRINT("printing: ");
+            DEBUG_PRINTLN(data.printing);
+            DEBUG_PRINT("bed_actual: ");
+            DEBUG_PRINTLN(data.bed_actual);
+            DEBUG_PRINT("bed_target: ");
+            DEBUG_PRINTLN(data.bed_target);
+            DEBUG_PRINT("nozzle_actual: ");
+            DEBUG_PRINTLN(data.nozzle_actual);
+            DEBUG_PRINT("nozzle_target: ");
+            DEBUG_PRINTLN(data.nozzle_target);
 #endif
         }
         else
         {
-            Serial.println("Empty: moonraker: get_printer_info");
+            DEBUG_PRINTLN("Empty: moonraker: get_printer_info");
         }
     }
     // String printer_info = send_request("GET", "/api/printer");
@@ -195,8 +195,8 @@ void MOONRAKER::get_printer_info(void) {
 
             DeserializationError error = deserializeJson(json_parse, printer_info);
             if (error) {
-                Serial.print("Deserialization failed: ");
-                Serial.println(error.c_str());
+                DEBUG_PRINT("Deserialization failed: ");
+                DEBUG_PRINTLN(error.c_str());
                 return;
             }
 
@@ -213,23 +213,23 @@ void MOONRAKER::get_printer_info(void) {
             data.nozzle_target = int16_t(json_parse["temperature"]["tool0"]["target"].as<double>() + 0.5f);
 
 #ifdef MOONRAKER_DEBUG
-            Serial.print("Printing: ");
-            Serial.println(data.printing);
-            Serial.print("Bed Actual: ");
-            Serial.println(data.bed_actual);
-            Serial.print("Bed Target: ");
-            Serial.println(data.bed_target);
-            Serial.print("Nozzle Actual: ");
-            Serial.println(data.nozzle_actual);
-            Serial.print("Nozzle Target: ");
-            Serial.println(data.nozzle_target);
+            DEBUG_PRINT("Printing: ");
+            DEBUG_PRINTLN(data.printing);
+            DEBUG_PRINT("Bed Actual: ");
+            DEBUG_PRINTLN(data.bed_actual);
+            DEBUG_PRINT("Bed Target: ");
+            DEBUG_PRINTLN(data.bed_target);
+            DEBUG_PRINT("Nozzle Actual: ");
+            DEBUG_PRINTLN(data.nozzle_actual);
+            DEBUG_PRINT("Nozzle Target: ");
+            DEBUG_PRINTLN(data.nozzle_target);
 #endif
         } else {
-            Serial.println("Empty: moonraker: get_printer_info");
+            DEBUG_PRINTLN("Empty: moonraker: get_printer_info");
         }
     } else {
-        Serial.print("HTTP Error: ");
-        Serial.println(httpresponsecode);
+        DEBUG_PRINT("HTTP Error: ");
+        DEBUG_PRINTLN(httpresponsecode);
     }
     http.end();
 }
@@ -264,19 +264,19 @@ void MOONRAKER::get_progress(void)
             strlcpy(data.file_path, path_only_gcode(path.c_str()), sizeof(data.file_path) - 1);
             data.file_path[sizeof(data.file_path) - 1] = 0;
 #ifdef MOONRAKER_DEBUG
-            Serial.print("progress: ");
-            Serial.println(data.progress);
-            Serial.print("path: ");
-            Serial.println(data.file_path);
+            DEBUG_PRINT("progress: ");
+            DEBUG_PRINTLN(data.progress);
+            DEBUG_PRINT("path: ");
+            DEBUG_PRINTLN(data.file_path);
 #endif
         }
         else
         {
-            Serial.println("Empty: moonraker: get_progress");
+            DEBUG_PRINTLN("Empty: moonraker: get_progress");
         }
     }else {
-        Serial.print("HTTP Error: ");
-        Serial.println(httpresponsecode);
+        DEBUG_PRINT("HTTP Error: ");
+        DEBUG_PRINTLN(httpresponsecode);
     }
     http.end();
 }
@@ -300,25 +300,25 @@ void MOONRAKER::get_AFC_status(void)
             data.changing_lanes = json_parse["result"]["status"]["gcode_macro _AFC_status"]["changing_lane"].as<bool>();
 
 #ifdef MOONRAKER_DEBUG
-            Serial.print("homing: ");
-            Serial.println(data.homing);
-            Serial.print("probing: ");
-            Serial.println(data.probing);
-            Serial.print("qgling: ");
-            Serial.println(data.qgling);
-            Serial.print("heating_nozzle: ");
-            Serial.println(data.heating_nozzle);
-            Serial.print("heating_bed: ");
-            Serial.println(data.heating_bed);
+            DEBUG_PRINT("homing: ");
+            DEBUG_PRINTLN(data.homing);
+            DEBUG_PRINT("probing: ");
+            DEBUG_PRINTLN(data.probing);
+            DEBUG_PRINT("qgling: ");
+            DEBUG_PRINTLN(data.qgling);
+            DEBUG_PRINT("heating_nozzle: ");
+            DEBUG_PRINTLN(data.heating_nozzle);
+            DEBUG_PRINT("heating_bed: ");
+            DEBUG_PRINTLN(data.heating_bed);
 #endif
         }
         else
         {
-            Serial.println("Empty: moonraker: get_AFC_status");
+            DEBUG_PRINTLN("Empty: moonraker: get_AFC_status");
         }
     }else {
-        Serial.print("HTTP Error: ");
-        Serial.println(httpresponsecode);
+        DEBUG_PRINT("HTTP Error: ");
+        DEBUG_PRINTLN(httpresponsecode);
     }
     http.end();
 }

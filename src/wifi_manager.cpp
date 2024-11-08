@@ -31,13 +31,13 @@ void setupWebSite(){
             targetHost = request->getParam("host", true)->value();
 
             saveCredentials(targetSSID, targetPassword, targetHost);
-            Serial.print("Host set as:");
+            DEBUG_PRINT("Host set as:");
 
             apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
-            Serial.println(apiURL);
+            DEBUG_PRINTLN(apiURL);
 
             if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 8, &WifITaskHandle) != pdPASS) {
-                Serial.println("Failed to create WiFi Connect Task");
+                DEBUG_PRINTLN("Failed to create WiFi Connect Task");
             }
             xTaskCreate(fetchDataTask, "Data Fetch Task", 4096, NULL, 8, &apiFetchTaskHandle);
             xTaskCreate(watchdog_task, "WatchdogTask", 2048, NULL, 9, NULL);
@@ -91,9 +91,9 @@ void setupWebSite(){
 void setupWiFiAP()
 {
     WiFi.softAP(apSSID, apPassword);
-    Serial.println("Access Point started. Connect to 'DeviceSetupAP'.");
-    Serial.print("IP address: ");
-    Serial.println(WiFi.softAPIP());
+    DEBUG_PRINTLN("Access Point started. Connect to 'DeviceSetupAP'.");
+    DEBUG_PRINT("IP address: ");
+    DEBUG_PRINTLN(WiFi.softAPIP());
 }
 
 void connectToWiFiTask(void *pvParameters)
@@ -104,27 +104,27 @@ void connectToWiFiTask(void *pvParameters)
     int retryCount = 0;
     while (WiFi.status() != WL_CONNECTED && retryCount < 10)
     {
-        Serial.println(".");
+        DEBUG_PRINTLN(".");
         retryCount++;
         delay(1000);
     }
 
     if (WiFi.status() == WL_CONNECTED)
     {
-        Serial.println("\nConnected to Wi-Fi!");
-        Serial.print("IP address: ");
-        Serial.println(WiFi.localIP());
+        DEBUG_PRINTLN("\nConnected to Wi-Fi!");
+        DEBUG_PRINT("IP address: ");
+        DEBUG_PRINTLN(WiFi.localIP());
 
         apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
 
         if (xTaskCreate(fetchDataTask, "Data Fetch Task", 4096, NULL, 8, &apiFetchTaskHandle) != pdPASS)
         {
-            Serial.println("Failed to create Data Fetch Task");
+            DEBUG_PRINTLN("Failed to create Data Fetch Task");
         }
     }
     else
     {
-        Serial.println("\nFailed to connect to Wi-Fi. Restarting AP mode.");
+        DEBUG_PRINTLN("\nFailed to connect to Wi-Fi. Restarting AP mode.");
         setupWiFiAP();
     }
 
@@ -139,24 +139,24 @@ void loadCredentials()
 
     if (!targetSSID.isEmpty() && !targetPassword.isEmpty() && !targetHost.isEmpty())
     {
-        Serial.println("Loaded Wi-Fi credentials and target host from memory.");
-        Serial.print("SSID: ");
-        Serial.println(targetSSID); // Print SSID
-        Serial.print("Password: ");
-        Serial.println(targetPassword); // Print Password
-        Serial.print("Host: ");
-        Serial.println(targetHost);
+        DEBUG_PRINTLN("Loaded Wi-Fi credentials and target host from memory.");
+        DEBUG_PRINT("SSID: ");
+        DEBUG_PRINTLN(targetSSID); // Print SSID
+        DEBUG_PRINT("Password: ");
+        DEBUG_PRINTLN(targetPassword); // Print Password
+        DEBUG_PRINT("Host: ");
+        DEBUG_PRINTLN(targetHost);
 
         // Begin Wi-Fi connection
         WiFi.begin(targetSSID.c_str(), targetPassword.c_str());
 
         // Construct the API URL from the saved host
         apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
-        Serial.println("API URL: " + apiURL); // Print API URL for debugging
+        DEBUG_PRINTLN("API URL: " + apiURL); // Print API URL for debugging
     }
     else
     {
-        Serial.println("No saved Wi-Fi credentials or host found.");
+        DEBUG_PRINTLN("No saved Wi-Fi credentials or host found.");
     }
 }
 
@@ -165,5 +165,5 @@ void saveCredentials(const String &ssid, const String &password, const String &h
     preferences.putString("ssid", ssid);
     preferences.putString("password", password);
     preferences.putString("host", host);
-    Serial.println("Wi-Fi credentials and host saved.");
+    DEBUG_PRINTLN("Wi-Fi credentials and host saved.");
 }

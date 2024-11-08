@@ -21,7 +21,7 @@ void fetchDataTask(void *pvParameters)
         if (WiFi.status() == WL_CONNECTED && !apiURL.isEmpty())
         {
 #ifdef DEBUGOUTPUT
-            Serial.print("Trying to grab API data \n");
+            DEBUG_PRINT("Trying to grab API data \n");
 #endif
             http.begin(apiURL);
             int httpResponseCode = http.GET();
@@ -30,16 +30,16 @@ void fetchDataTask(void *pvParameters)
             {
                 String payload = http.getString();
 #ifdef DEBUGOUTPUT
-                Serial.println("Received data:");
-                Serial.println(payload);
+                DEBUG_PRINTLN("Received data:");
+                DEBUG_PRINTLN(payload);
 #endif
                 // Parse JSON data
                 ParseAPIResponse(payload);
             }
             else
             {
-                Serial.print("HTTP error: ");
-                Serial.println(httpResponseCode);
+                DEBUG_PRINT("HTTP error: ");
+                DEBUG_PRINTLN(httpResponseCode);
             }
             http.end();
             moonraker.get_printer_ready();
@@ -50,7 +50,7 @@ void fetchDataTask(void *pvParameters)
         }
         else
         {
-            Serial.println("Wi-Fi not connected or API URL not set");
+            DEBUG_PRINTLN("Wi-Fi not connected or API URL not set");
         }
         lastApiUpdate = xTaskGetTickCount();
         vTaskDelay(pdMS_TO_TICKS(200));
@@ -60,15 +60,15 @@ void fetchDataTask(void *pvParameters)
 void ParseAPIResponse(const String &jsonResponse)
 {
 #ifdef DEBUGOUTPUT
-    Serial.println("Running API Parse");
+    DEBUG_PRINTLN("Running API Parse");
 #endif
     DynamicJsonDocument doc(1024);
     DeserializationError error = deserializeJson(doc, jsonResponse);
 
     if (error)
     {
-        Serial.print("Failed to parse JSON: ");
-        Serial.println(error.f_str());
+        DEBUG_PRINT("Failed to parse JSON: ");
+        DEBUG_PRINTLN(error.f_str());
         return;
     }
 
@@ -78,8 +78,8 @@ void ParseAPIResponse(const String &jsonResponse)
     JsonObject afc = status["AFC"];
 
 #ifdef DEBUGOUTPUT
-    Serial.print("Turtle_1 Object: ");
-    Serial.println(afc["Turtle_1"].as<String>());
+    DEBUG_PRINT("Turtle_1 Object: ");
+    DEBUG_PRINTLN(afc["Turtle_1"].as<String>());
 #endif
     for (int leg = 1; leg <= 4; ++leg)
     {
@@ -92,14 +92,14 @@ void ParseAPIResponse(const String &jsonResponse)
             loadedToHub = legData["loaded_to_hub"];
             int lane = legData["LANE"];
 #ifdef DEBUGOUTPUT
-            Serial.print("Lane ");
-            Serial.print(lane);
-            Serial.print(" - Load: ");
-            Serial.print(load ? "true" : "false");
-            Serial.print(", Prep: ");
-            Serial.print(prep ? "true" : "false");
-            Serial.print(", Loaded to Hub: ");
-            Serial.println(loadedToHub ? "true" : "false");
+            DEBUG_PRINT("Lane ");
+            DEBUG_PRINT(lane);
+            DEBUG_PRINT(" - Load: ");
+            DEBUG_PRINT(load ? "true" : "false");
+            DEBUG_PRINT(", Prep: ");
+            DEBUG_PRINT(prep ? "true" : "false");
+            DEBUG_PRINT(", Loaded to Hub: ");
+            DEBUG_PRINTLN(loadedToHub ? "true" : "false");
 #endif
             if (lane == 1)
             {
@@ -120,9 +120,9 @@ void ParseAPIResponse(const String &jsonResponse)
         }
         else
         {
-            Serial.print("Checking key: ");
-            Serial.println(legKey);
-            Serial.println("Key not found.");
+            DEBUG_PRINT("Checking key: ");
+            DEBUG_PRINTLN(legKey);
+            DEBUG_PRINTLN("Key not found.");
         }
     }
 
@@ -135,9 +135,9 @@ void ParseAPIResponse(const String &jsonResponse)
             JsonObject system = afcStatus["system"];
 
 #ifdef DEBUGOUTPUT
-            Serial.print("System Object: ");
+            DEBUG_PRINT("System Object: ");
             serializeJson(system, Serial);
-            Serial.println();
+            DEBUG_PRINTLN();
 #endif
             currentLoadChanged = false;
             currentLoad = system["current_load"].as<const char *>();
@@ -165,45 +165,45 @@ void ParseAPIResponse(const String &jsonResponse)
             loadedToHub = system["hub_loaded"];
 
 #ifdef DEBUGOUTPUT
-            Serial.print("Raw tool_loaded value: ");
-            Serial.println(toolLoaded ? "true" : "false");
+            DEBUG_PRINT("Raw tool_loaded value: ");
+            DEBUG_PRINTLN(toolLoaded ? "true" : "false");
 #endif
             JsonVariant buffer = system["buffer"];
 #ifdef DEBUGOUTPUT
-            Serial.print("Buffer: ");
+            DEBUG_PRINT("Buffer: ");
             if (buffer.isNull())
             {
-                Serial.println("null");
+                DEBUG_PRINTLN("null");
             }
             else
             {
-                Serial.println(buffer.as<String>());
+                DEBUG_PRINTLN(buffer.as<String>());
             }
 #endif
         }
         else
         {
-            Serial.println("System key not found in AFC.");
+            DEBUG_PRINTLN("System key not found in AFC.");
         }
     }
     else
     {
-        Serial.println("AFC key not found in status.");
+        DEBUG_PRINTLN("AFC key not found in status.");
     }
 #ifdef DEBUGOUTPUT
-    Serial.print("Lane 1 Status: ");
-    Serial.println(leg1Load);
-    Serial.print("Lane 2 Status: ");
-    Serial.println(leg2Load);
-    Serial.print("Lane 3 Status: ");
-    Serial.println(leg3Load);
-    Serial.print("Lane 4 Status: ");
-    Serial.println(leg4Load);
-    Serial.print("Tool Status: ");
-    Serial.println(toolLoaded ? "true" : "false");
-    Serial.print("Hub Status: ");
-    Serial.println(loadedToHub ? "true" : "false");
-    Serial.print("Current Load: ");
-    Serial.println(currentLoad);
+    DEBUG_PRINT("Lane 1 Status: ");
+    DEBUG_PRINTLN(leg1Load);
+    DEBUG_PRINT("Lane 2 Status: ");
+    DEBUG_PRINTLN(leg2Load);
+    DEBUG_PRINT("Lane 3 Status: ");
+    DEBUG_PRINTLN(leg3Load);
+    DEBUG_PRINT("Lane 4 Status: ");
+    DEBUG_PRINTLN(leg4Load);
+    DEBUG_PRINT("Tool Status: ");
+    DEBUG_PRINTLN(toolLoaded ? "true" : "false");
+    DEBUG_PRINT("Hub Status: ");
+    DEBUG_PRINTLN(loadedToHub ? "true" : "false");
+    DEBUG_PRINT("Current Load: ");
+    DEBUG_PRINTLN(currentLoad);
 #endif
 }
