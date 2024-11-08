@@ -4,11 +4,11 @@ on:
   push:
     tags:
       - 'V*'  # Trigger on tags that start with "V"
-  workflow_dispatch:
+  workflow_dispatch:  # Allow manual trigger from the GitHub UI
 
 jobs:
   build:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-latest  # Change to 'windows-latest' if you want to build on Windows
 
     steps:
       - name: Checkout repository
@@ -30,8 +30,8 @@ jobs:
       - name: Upload binary as artifact
         uses: actions/upload-artifact@v3
         with:
-          name: compiled-binary
-          path: '**/*.bin'  # Adjust path if necessary
+          name: firmware-bin
+          path: '.pio/build/**/firmware.bin'  # Path to firmware.bin
 
   release:
     needs: build  # Ensures this job runs after 'build'
@@ -40,7 +40,7 @@ jobs:
       - name: Download artifact
         uses: actions/download-artifact@v3
         with:
-          name: compiled-binary
+          name: firmware-bin
           path: ./  # Download artifact to current directory
 
       - name: Create GitHub Release
@@ -61,6 +61,6 @@ jobs:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         with:
           upload_url: ${{ steps.create_release.outputs.upload_url }}
-          asset_path: ./*.bin
+          asset_path: ./firmware.bin  
           asset_name: firmware-${{ github.ref_name }}.bin
           asset_content_type: application/octet-stream
