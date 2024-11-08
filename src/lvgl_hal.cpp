@@ -6,6 +6,7 @@ static lv_disp_draw_buf_t draw_buf;
 static lv_color_t *buf;
 static lv_color_t *buf1;
 static bool hw_setup = false;
+static bool lv_initialized = false;
 
 void usr_disp_flush(lv_disp_drv_t *disp, const lv_area_t *area, lv_color_t *color_p) {
     uint32_t w = (area->x2 - area->x1 + 1);
@@ -108,52 +109,56 @@ void tft_set_backlight(int8_t aw9346_to_light) {
 
 lv_indev_t * ts_cst816s_indev;
 void lvgl_hal_init(void) {
-    if(!hw_setup){
-    pinMode(TOUCH_RES, OUTPUT);
-    digitalWrite(TOUCH_RES, HIGH);delay(2);
-    digitalWrite(TOUCH_RES, LOW);delay(10);
-    digitalWrite(TOUCH_RES, HIGH);delay(2);
+    if (!hw_setup) {
+        pinMode(TOUCH_RES, OUTPUT);
+        digitalWrite(TOUCH_RES, HIGH); delay(2);
+        digitalWrite(TOUCH_RES, LOW); delay(10);
+        digitalWrite(TOUCH_RES, HIGH); delay(2);
 
-    Wire.begin(TOUCH_IICSDA, TOUCH_IICSCL);
+        Wire.begin(TOUCH_IICSDA, TOUCH_IICSCL);
 
-    pinMode(LCD_BL_PIN , OUTPUT);
-    digitalWrite(LCD_BL_PIN , HIGH);
+        pinMode(LCD_BL_PIN , OUTPUT);
+        digitalWrite(LCD_BL_PIN , HIGH);
 
-    axs15231_init();
-    hw_setup = true;
+        axs15231_init();
+        hw_setup = true;
     }
 
+    if (!lv_initialized) {
         lv_init();
-    size_t buffer_size =
-        sizeof(lv_color_t) * EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES;
-    buf = (lv_color_t *)ps_malloc(buffer_size);
-    if (buf == NULL) {
-      while (1) {
-        Serial.println("buf NULL");
-        delay(500);
-      }
+        lv_initialized = true;
     }
 
-    buf1 = (lv_color_t *)ps_malloc(buffer_size);
-    if (buf1 == NULL) {
-      while (1) {
-        Serial.println("buf NULL");
-        delay(500);
-      }
+    size_t buffer_size = sizeof(lv_color_t) * EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES;
+
+    if (buf == nullptr) {
+        buf = (lv_color_t *)ps_malloc(buffer_size);
+        if (buf == NULL) {
+            Serial.println("Failed to allocate buf");
+            return;
+        }
     }
 
-    lv_disp_draw_buf_init(&draw_buf, buf, buf1, buffer_size);
-    /*Initialize the display*/
+    if (buf1 == nullptr) {
+        buf1 = (lv_color_t *)ps_malloc(buffer_size);
+        if (buf1 == NULL) {
+            Serial.println("Failed to allocate buf1");
+            return;
+        }
+    }
+
+    lv_disp_draw_buf_init(&draw_buf, buf, buf1, EXAMPLE_LCD_H_RES * EXAMPLE_LCD_V_RES);
+
     static lv_disp_drv_t disp_drv;
     lv_disp_drv_init(&disp_drv);
-    /*Change the following line to your display resolution*/
+
     disp_drv.hor_res = EXAMPLE_LCD_H_RES;
     disp_drv.ver_res = EXAMPLE_LCD_V_RES;
     disp_drv.flush_cb = usr_disp_flush;
     disp_drv.draw_buf = &draw_buf;
-    disp_drv.sw_rotate = 1;             //If you turn on software rotation, Do not update or replace LVGL
-    disp_drv.rotated = LV_DISP_ROT_90;  
-    disp_drv.full_refresh = 1;          //full_refresh must be 1
+    disp_drv.sw_rotate = 1;
+    disp_drv.rotated = LV_DISP_ROT_90;
+    disp_drv.full_refresh = 1;
     lv_disp_drv_register(&disp_drv);
 
     static lv_indev_drv_t indev_drv;
@@ -162,8 +167,9 @@ void lvgl_hal_init(void) {
     indev_drv.read_cb = my_touchpad_read;
     lv_indev_drv_register(&indev_drv);
 
-
-    /* set background color to black (default white) */
     lv_obj_set_style_bg_color(lv_scr_act(), LV_COLOR_MAKE(0, 0, 0), LV_STATE_DEFAULT);
+    lv_obj_invalidate(lv_scr_act());
+
     Serial.println("Finished LVGL startup");
 }
+
