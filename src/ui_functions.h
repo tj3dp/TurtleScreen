@@ -11,7 +11,6 @@ void tool0Pressed(lv_event_t * e);
 void tool1Pressed(lv_event_t * e);
 void tool2Pressed(lv_event_t * e);
 void tool3Pressed(lv_event_t * e);
-void turtleTest(lv_event_t * e);
 
 #ifdef __cplusplus
 } /*extern "C"*/

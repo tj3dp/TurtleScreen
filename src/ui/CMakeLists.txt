@@ -1,16 +1,22 @@
-SET(SOURCES screens/ui_Screen1.c
-    screens/ui_Screen2.c
+SET(SOURCES screens/ui_LaneSelect.c
+    screens/ui_CurrentLaneToggle.c
+    screens/ui_GeneralControl.c
+    screens/ui_ColorSettings.c
+    screens/ui_ColorSelect.c
     ui.c
     components/ui_comp_hook.c
     ui_helpers.c
     ui_events.c
-    images/ui_img_spoolman_png.c
     images/ui_img_642937331.c
     images/ui_img_642936306.c
     images/ui_img_642943729.c
     images/ui_img_642942704.c
-    images/ui_img_1470730272.c
+    images/ui_img_settings_png.c
     images/ui_img_filament_png.c
+    images/ui_img_bed_png.c
+    images/ui_img_986727804.c
+    images/ui_img_1470730272.c
+    images/ui_img_complete_png.c
     images/ui_img_922480046.c
     images/ui_img_539412392.c
     images/ui_img_542316787.c
