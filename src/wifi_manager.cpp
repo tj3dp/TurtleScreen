@@ -33,7 +33,7 @@ void setupWebSite(){
             saveCredentials(targetSSID, targetPassword, targetHost);
             DEBUG_PRINT("Host set as:");
 
-            apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
+            apiURL = "http://" + targetHost + ":7125/server/afc/spools";
             DEBUG_PRINTLN(apiURL);
 
             if (xTaskCreate(connectToWiFiTask, "WiFi Connect Task", 4096, NULL, 8, &WifITaskHandle) != pdPASS) {
@@ -115,7 +115,7 @@ void connectToWiFiTask(void *pvParameters)
         DEBUG_PRINT("IP address: ");
         DEBUG_PRINTLN(WiFi.localIP());
 
-        apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
+        apiURL = "http://" + targetHost + ":7125/server/afc/spools";
 
         if (xTaskCreate(fetchDataTask, "Data Fetch Task", 4096, NULL, 8, &apiFetchTaskHandle) != pdPASS)
         {
@@ -151,7 +151,7 @@ void loadCredentials()
         WiFi.begin(targetSSID.c_str(), targetPassword.c_str());
 
         // Construct the API URL from the saved host
-        apiURL = "http://" + targetHost + "/printer/objects/query?AFC";
+        apiURL = "http://" + targetHost + ":7125/server/afc/spools";
         DEBUG_PRINTLN("API URL: " + apiURL); // Print API URL for debugging
     }
     else

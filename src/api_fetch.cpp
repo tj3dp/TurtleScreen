@@ -1,5 +1,4 @@
 #include "api_fetch.h"
-
 String apiURL;
 float eventTime;
 bool leg1Load;
@@ -62,7 +61,7 @@ void ParseAPIResponse(const String &jsonResponse)
 #ifdef DEBUGOUTPUT
     DEBUG_PRINTLN("Running API Parse");
 #endif
-    DynamicJsonDocument doc(1024);
+    DynamicJsonDocument doc(2048); // Increase size for the new structure
     DeserializationError error = deserializeJson(doc, jsonResponse);
 
     if (error)
@@ -73,123 +72,151 @@ void ParseAPIResponse(const String &jsonResponse)
     }
 
     JsonObject result = doc["result"];
-    eventTime = result["eventtime"];
-    JsonObject status = result["status"];
-    JsonObject afc = status["AFC"];
+    String status = result["status"].as<String>();
 
-#ifdef DEBUGOUTPUT
-    DEBUG_PRINT("Turtle_1 Object: ");
-    DEBUG_PRINTLN(afc["Turtle_1"].as<String>());
-#endif
-    for (int leg = 1; leg <= 4; ++leg)
+    if (status != "success")
     {
-        String legKey = "leg" + String(leg);
-        if (afc.containsKey("Turtle_1") && afc["Turtle_1"].containsKey(legKey.c_str()))
-        {
-            JsonObject legData = afc["Turtle_1"][legKey];
-            bool load = legData["load"];
-            bool prep = legData["prep"];
-            loadedToHub = legData["loaded_to_hub"];
-            int lane = legData["LANE"];
-#ifdef DEBUGOUTPUT
-            DEBUG_PRINT("Lane ");
-            DEBUG_PRINT(lane);
-            DEBUG_PRINT(" - Load: ");
-            DEBUG_PRINT(load ? "true" : "false");
-            DEBUG_PRINT(", Prep: ");
-            DEBUG_PRINT(prep ? "true" : "false");
-            DEBUG_PRINT(", Loaded to Hub: ");
-            DEBUG_PRINTLN(loadedToHub ? "true" : "false");
-#endif
-            if (lane == 1)
-            {
-                leg1Load = load;
-            }
-            else if (lane == 2)
-            {
-                leg2Load = load;
-            }
-            else if (lane == 3)
-            {
-                leg3Load = load;
-            }
-            else if (lane == 4)
-            {
-                leg4Load = load;
-            }
-        }
-        else
-        {
-            DEBUG_PRINT("Checking key: ");
-            DEBUG_PRINTLN(legKey);
-            DEBUG_PRINTLN("Key not found.");
-        }
+        DEBUG_PRINTLN("API status is not success");
+        return;
     }
 
-    if (status.containsKey("AFC"))
+    JsonObject spools = result["spools"];
+    JsonObject turtle1 = spools["Turtle_1"];
+
+    if (!turtle1.isNull())
     {
-        JsonObject afcStatus = status["AFC"];
-
-        if (afcStatus.containsKey("system"))
+#ifdef DEBUGOUTPUT
+        DEBUG_PRINT("Turtle_1 Object: ");
+        serializeJson(turtle1, Serial);
+        DEBUG_PRINTLN();
+#endif
+        // Iterate through the legs (leg1, leg2, leg3, leg4)
+        for (int leg = 1; leg <= 4; ++leg)
         {
-            JsonObject system = afcStatus["system"];
+            String legKey = "leg" + String(leg);
+            if (turtle1.containsKey(legKey))
+            {
+                JsonObject legData = turtle1[legKey];
+                bool load = legData["load"];
+                bool prep = legData["prep"];
+                loadedToHub = legData["loaded_to_hub"];
+                String material = legData["material"].as<String>();
+                String spool_id = legData["spool_id"].as<String>();
+                String color = legData["color"].as<String>();
+                float remaining_weight = legData["remaining_weight"].as<float>();
+
+                int lane = legData["LANE"];
 
 #ifdef DEBUGOUTPUT
-            DEBUG_PRINT("System Object: ");
-            serializeJson(system, Serial);
-            DEBUG_PRINTLN();
+                DEBUG_PRINT("Lane ");
+                DEBUG_PRINT(lane);
+                DEBUG_PRINT(" - Load: ");
+                DEBUG_PRINT(load ? "true" : "false");
+                DEBUG_PRINT(", Prep: ");
+                DEBUG_PRINT(prep ? "true" : "false");
+                DEBUG_PRINT(", Loaded to Hub: ");
+                DEBUG_PRINT(loadedToHub ? "true" : "false");
+                DEBUG_PRINT(", Material: ");
+                DEBUG_PRINT(material);
+                DEBUG_PRINT(", Spool ID: ");
+                DEBUG_PRINT(spool_id);
+                DEBUG_PRINT(", Color: ");
+                DEBUG_PRINT(color);
+                DEBUG_PRINT(", Remaining Weight: ");
+                DEBUG_PRINTLN(remaining_weight);
 #endif
-            currentLoadChanged = false;
-            currentLoad = system["current_load"].as<const char *>();
-
-            if (currentLoad == nullptr)
-            {
-                if (currentLoadBuffer[0] != '\0')
+                // Update leg load statuses
+                if (lane == 1)
                 {
-                    currentLoadBuffer[0] = '\0';
-                    currentLoadChanged = true;
+                    leg1Load = load;
+                }
+                else if (lane == 2)
+                {
+                    leg2Load = load;
+                }
+                else if (lane == 3)
+                {
+                    leg3Load = load;
+                }
+                else if (lane == 4)
+                {
+                    leg4Load = load;
                 }
             }
             else
             {
-                if (strcmp(currentLoadBuffer, currentLoad) != 0)
-                {
-                    strncpy(currentLoadBuffer, currentLoad, sizeof(currentLoadBuffer) - 1);
-                    currentLoadBuffer[sizeof(currentLoadBuffer) - 1] = '\0';
-                    currentLoadChanged = true;
-                    //
-                }
-            }
-
-            toolLoaded = system["tool_loaded"];
-            loadedToHub = system["hub_loaded"];
-
 #ifdef DEBUGOUTPUT
-            DEBUG_PRINT("Raw tool_loaded value: ");
-            DEBUG_PRINTLN(toolLoaded ? "true" : "false");
+                DEBUG_PRINT("Checking key: ");
+                DEBUG_PRINTLN(legKey);
+                DEBUG_PRINTLN("Key not found.");
 #endif
-            JsonVariant buffer = system["buffer"];
-#ifdef DEBUGOUTPUT
-            DEBUG_PRINT("Buffer: ");
-            if (buffer.isNull())
-            {
-                DEBUG_PRINTLN("null");
             }
-            else
-            {
-                DEBUG_PRINTLN(buffer.as<String>());
-            }
-#endif
-        }
-        else
-        {
-            DEBUG_PRINTLN("System key not found in AFC.");
         }
     }
     else
     {
-        DEBUG_PRINTLN("AFC key not found in status.");
+#ifdef DEBUGOUTPUT
+        DEBUG_PRINTLN("Turtle_1 key not found in spools.");
+#endif
     }
+
+    // Parsing system information
+    JsonObject system = spools["system"];
+    if (!system.isNull())
+    {
+#ifdef DEBUGOUTPUT
+        DEBUG_PRINT("System Object: ");
+        serializeJson(system, Serial);
+        DEBUG_PRINTLN();
+#endif
+        currentLoadChanged = false;
+        currentLoad = system["current_load"].as<const char *>();
+
+        if (currentLoad == nullptr)
+        {
+            if (currentLoadBuffer[0] != '\0')
+            {
+                currentLoadBuffer[0] = '\0';
+                currentLoadChanged = true;
+            }
+        }
+        else
+        {
+            if (strcmp(currentLoadBuffer, currentLoad) != 0)
+            {
+                strncpy(currentLoadBuffer, currentLoad, sizeof(currentLoadBuffer) - 1);
+                currentLoadBuffer[sizeof(currentLoadBuffer) - 1] = '\0';
+                currentLoadChanged = true;
+            }
+        }
+
+        toolLoaded = system["tool_loaded"];
+        loadedToHub = system["hub_loaded"];
+
+#ifdef DEBUGOUTPUT
+        DEBUG_PRINT("Raw tool_loaded value: ");
+        DEBUG_PRINTLN(toolLoaded ? "true" : "false");
+#endif
+        JsonVariant buffer = system["buffer"];
+#ifdef DEBUGOUTPUT
+        DEBUG_PRINT("Buffer: ");
+        if (buffer.isNull())
+        {
+            DEBUG_PRINTLN("null");
+        }
+        else
+        {
+            DEBUG_PRINTLN(buffer.as<String>());
+        }
+#endif
+    }
+    else
+    {
+#ifdef DEBUGOUTPUT
+        DEBUG_PRINTLN("System key not found in spools.");
+#endif
+    }
+
 #ifdef DEBUGOUTPUT
     DEBUG_PRINT("Lane 1 Status: ");
     DEBUG_PRINTLN(leg1Load);
