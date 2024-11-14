@@ -17,6 +17,8 @@ extern char currentLoadBuffer[32];
 extern bool toolLoaded;
 extern bool loadedToHub;
 extern bool currentLoadChanged;
+extern int numUnits;
+extern int numLanes;
 
 void fetchDataTask(void *pvParameters);
 void ParseAPIResponse(const String& jsonResponse);

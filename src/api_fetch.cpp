@@ -11,6 +11,8 @@ bool toolLoaded;
 bool loadedToHub;
 bool currentLoadChanged;
 char currentLoadBuffer[32] = "";
+int numUnits;
+int numLanes;
 uint32_t lastApiUpdate;
 HTTPClient http;
 
@@ -161,14 +163,19 @@ void ParseAPIResponse(const String &jsonResponse)
                     strncpy(currentLoadBuffer, currentLoad, sizeof(currentLoadBuffer) - 1);
                     currentLoadBuffer[sizeof(currentLoadBuffer) - 1] = '\0';
                     currentLoadChanged = true;
-                    //
                 }
             }
 
             toolLoaded = system["tool_loaded"];
             loadedToHub = system["hub_loaded"];
+            numUnits = system["num_units"].as<int>();
+            numLanes = system["num_lanes"].as<int>();
 
 #ifdef DEBUGOUTPUT
+            DEBUG_PRINT("Num Units: ");
+            DEBUG_PRINTLN(numUnits);
+            DEBUG_PRINT("Num Lanes: ");
+            DEBUG_PRINTLN(numLanes);
             DEBUG_PRINT("Raw tool_loaded value: ");
             DEBUG_PRINTLN(toolLoaded ? "true" : "false");
 #endif
@@ -211,3 +218,4 @@ void ParseAPIResponse(const String &jsonResponse)
     DEBUG_PRINTLN(currentLoad);
 #endif
 }
+
