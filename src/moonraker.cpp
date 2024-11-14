@@ -138,50 +138,6 @@ void MOONRAKER::get_printer_ready(void)
         }
     }
 }
-/*
-void MOONRAKER::get_printer_info(void)
-{
-    http.begin(targetHost + "/api/printer");
-    int httpresponsecode = http.GET();
-    if (httpresponsecode == 200)
-    {
-        String printer_info = http.getString();
-        if (!printer_info.isEmpty())
-        {
-            DynamicJsonDocument json_parse(printer_info.length() * 2);
-            deserializeJson(json_parse, printer_info);
-            data.pause = json_parse["state"]["flags"]["pausing"].as<bool>();        // pausing
-            data.pause |= json_parse["state"]["flags"]["paused"].as<bool>();        // paused
-            data.printing = json_parse["state"]["flags"]["printing"].as<bool>();    // printing
-            data.printing |= json_parse["state"]["flags"]["cancelling"].as<bool>(); // cancelling
-            data.printing |= data.pause;                                            // pause
-            data.bed_actual = int16_t(json_parse["temperature"]["bed"]["actual"].as<double>() + 0.5f);
-            data.bed_target = int16_t(json_parse["temperature"]["bed"]["target"].as<double>() + 0.5f);
-            data.nozzle_actual = int16_t(json_parse["temperature"]["tool0"]["actual"].as<double>() + 0.5f);
-            data.nozzle_target = int16_t(json_parse["temperature"]["tool0"]["target"].as<double>() + 0.5f);
-#ifdef MOONRAKER_DEBUG
-            // DEBUG_PRINT("unoperational: ");
-            // DEBUG_PRINTLN(unoperational);
-            DEBUG_PRINT("printing: ");
-            DEBUG_PRINTLN(data.printing);
-            DEBUG_PRINT("bed_actual: ");
-            DEBUG_PRINTLN(data.bed_actual);
-            DEBUG_PRINT("bed_target: ");
-            DEBUG_PRINTLN(data.bed_target);
-            DEBUG_PRINT("nozzle_actual: ");
-            DEBUG_PRINTLN(data.nozzle_actual);
-            DEBUG_PRINT("nozzle_target: ");
-            DEBUG_PRINTLN(data.nozzle_target);
-#endif
-        }
-        else
-        {
-            DEBUG_PRINTLN("Empty: moonraker: get_printer_info");
-        }
-    }
-    // String printer_info = send_request("GET", "/api/printer");
-}
-*/
 
 void MOONRAKER::get_printer_info(void) {
     http.begin("http://" + targetHost + "/api/printer");
@@ -190,28 +146,22 @@ void MOONRAKER::get_printer_info(void) {
     if (httpresponsecode > 0) {
         String printer_info = http.getString();
         if (!printer_info.isEmpty()) {
-            // Increase the size for parsing and add error handling
-            DynamicJsonDocument json_parse(1024);  // Size adjusted for typical data, increase if needed
-
+            DynamicJsonDocument json_parse(1024); 
             DeserializationError error = deserializeJson(json_parse, printer_info);
             if (error) {
                 DEBUG_PRINT("Deserialization failed: ");
                 DEBUG_PRINTLN(error.c_str());
                 return;
             }
-
-            // Parse data assuming JSON structure is accurate
             data.pause = json_parse["state"]["flags"]["pausing"].as<bool>() ||
                          json_parse["state"]["flags"]["paused"].as<bool>();
             data.printing = json_parse["state"]["flags"]["printing"].as<bool>() ||
                             json_parse["state"]["flags"]["cancelling"].as<bool>() || data.pause;
-            data.pause = json_parse["state"]["flags"]["pausing"].as<bool>();        // pausing
-            data.pause |= json_parse["state"]["flags"]["paused"].as<bool>();        // paused
-            data.printing = json_parse["state"]["flags"]["printing"].as<bool>();    // printing
-            data.printing |= json_parse["state"]["flags"]["cancelling"].as<bool>(); // cancelling
-            data.printing |= data.pause;                                            // pause
-
-            // Safely parse temperatures, converting to integer values
+            data.pause = json_parse["state"]["flags"]["pausing"].as<bool>();
+            data.pause |= json_parse["state"]["flags"]["paused"].as<bool>();
+            data.printing = json_parse["state"]["flags"]["printing"].as<bool>(); 
+            data.printing |= json_parse["state"]["flags"]["cancelling"].as<bool>();
+            data.printing |= data.pause;
             data.bed_actual = int16_t(json_parse["temperature"]["bed"]["actual"].as<double>() + 0.5f);
             data.bed_target = int16_t(json_parse["temperature"]["bed"]["target"].as<double>() + 0.5f);
             data.nozzle_actual = int16_t(json_parse["temperature"]["tool0"]["actual"].as<double>() + 0.5f);
