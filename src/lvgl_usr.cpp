@@ -106,13 +106,6 @@ void lvgl_toggle_current_print_panel() {
     bool switchStatusHidden = lv_obj_has_flag(ui_SwitchStatusPanel, LV_OBJ_FLAG_HIDDEN);
     bool printStatusHidden = lv_obj_has_flag(ui_Printstatus, LV_OBJ_FLAG_HIDDEN);
 
-    Serial.print("Switch Panel Status (Hidden): ");
-    Serial.print(switchStatusHidden ? "Yes | " : "No | ");
-    Serial.print("Print Panel Status (Hidden): ");
-    Serial.print(printStatusHidden ? "Yes | " : "No | ");
-    Serial.print("Print Active: ");
-    Serial.println(moonraker.data.printing ? "Yes" : "No");
-
     if (moonraker.data.printing) {
         if (printStatusHidden) {
             if (!switchStatusHidden) {
