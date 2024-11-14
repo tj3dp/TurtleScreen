@@ -21,6 +21,10 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_height(ui_AFCBrush, 50);
     lv_obj_add_flag(ui_AFCBrush, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_AFCBrush, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_AFCBrush, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_AFCBrush, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_Label7 = lv_label_create(ui_AFCBrush);
     lv_obj_set_width(ui_Label7, LV_SIZE_CONTENT);   /// 1
@@ -36,6 +40,10 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_align(ui_AFCCut, LV_ALIGN_TOP_MID);
     lv_obj_add_flag(ui_AFCCut, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_AFCCut, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_AFCCut, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_AFCCut, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_Label8 = lv_label_create(ui_AFCCut);
     lv_obj_set_width(ui_Label8, LV_SIZE_CONTENT);   /// 1
@@ -51,6 +59,10 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_align(ui_AFCKick, LV_ALIGN_TOP_MID);
     lv_obj_add_flag(ui_AFCKick, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_AFCKick, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_AFCKick, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_AFCKick, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_Label9 = lv_label_create(ui_AFCKick);
     lv_obj_set_width(ui_Label9, LV_SIZE_CONTENT);   /// 1
@@ -64,6 +76,10 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_align(ui_AFCPark, LV_ALIGN_TOP_RIGHT);
     lv_obj_add_flag(ui_AFCPark, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_AFCPark, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_AFCPark, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_AFCPark, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_Label10 = lv_label_create(ui_AFCPark);
     lv_obj_set_width(ui_Label10, LV_SIZE_CONTENT);   /// 1
@@ -77,6 +93,10 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_align(ui_AFCPoop, LV_ALIGN_BOTTOM_LEFT);
     lv_obj_add_flag(ui_AFCPoop, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_AFCPoop, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_AFCPoop, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_AFCPoop, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_Label11 = lv_label_create(ui_AFCPoop);
     lv_obj_set_width(ui_Label11, LV_SIZE_CONTENT);   /// 1
@@ -92,6 +112,10 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_align(ui_BTPrep, LV_ALIGN_BOTTOM_MID);
     lv_obj_add_flag(ui_BTPrep, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_BTPrep, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_BTPrep, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_BTPrep, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_Label12 = lv_label_create(ui_BTPrep);
     lv_obj_set_width(ui_Label12, LV_SIZE_CONTENT);   /// 1
@@ -107,6 +131,10 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_align(ui_BTToolUnload, LV_ALIGN_BOTTOM_MID);
     lv_obj_add_flag(ui_BTToolUnload, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_BTToolUnload, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_BTToolUnload, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_BTToolUnload, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_Label13 = lv_label_create(ui_BTToolUnload);
     lv_obj_set_width(ui_Label13, LV_SIZE_CONTENT);   /// 1
@@ -120,6 +148,10 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_align(ui_Button11, LV_ALIGN_BOTTOM_RIGHT);
     lv_obj_add_flag(ui_Button11, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Button11, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Button11, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Button11, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_Image7 = lv_img_create(ui_Button11);
     lv_img_set_src(ui_Image7, &ui_img_1470730272);

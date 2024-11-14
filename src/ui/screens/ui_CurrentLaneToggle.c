@@ -22,6 +22,10 @@ void ui_CurrentLaneToggle_screen_init(void)
     lv_obj_set_align(ui_ActivateLane, LV_ALIGN_LEFT_MID);
     lv_obj_add_flag(ui_ActivateLane, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_ActivateLane, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_ActivateLane, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_ActivateLane, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_ActivateLaneLabel = lv_label_create(ui_ActivateLane);
     lv_obj_set_width(ui_ActivateLaneLabel, LV_SIZE_CONTENT);   /// 1
@@ -35,6 +39,10 @@ void ui_CurrentLaneToggle_screen_init(void)
     lv_obj_set_align(ui_EjectLane, LV_ALIGN_RIGHT_MID);
     lv_obj_add_flag(ui_EjectLane, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_EjectLane, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_EjectLane, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_EjectLane, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
     ui_EjectLaneLabel = lv_label_create(ui_EjectLane);
     lv_obj_set_width(ui_EjectLaneLabel, LV_SIZE_CONTENT);   /// 1
@@ -42,16 +50,20 @@ void ui_CurrentLaneToggle_screen_init(void)
     lv_obj_set_align(ui_EjectLaneLabel, LV_ALIGN_CENTER);
     lv_label_set_text(ui_EjectLaneLabel, "Eject Lane");
 
-    ui_Button10 = lv_btn_create(ui_CurrentLaneToggle);
-    lv_obj_set_width(ui_Button10, 100);
-    lv_obj_set_height(ui_Button10, 50);
-    lv_obj_set_x(ui_Button10, -261);
-    lv_obj_set_y(ui_Button10, 56);
-    lv_obj_set_align(ui_Button10, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Button10, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Button10, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_BackLaneToggle = lv_btn_create(ui_CurrentLaneToggle);
+    lv_obj_set_width(ui_BackLaneToggle, 100);
+    lv_obj_set_height(ui_BackLaneToggle, 50);
+    lv_obj_set_x(ui_BackLaneToggle, -261);
+    lv_obj_set_y(ui_BackLaneToggle, 56);
+    lv_obj_set_align(ui_BackLaneToggle, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_BackLaneToggle, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_BackLaneToggle, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_BackLaneToggle, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_BackLaneToggle, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
 
-    ui_Image6 = lv_img_create(ui_Button10);
+    ui_Image6 = lv_img_create(ui_BackLaneToggle);
     lv_img_set_src(ui_Image6, &ui_img_1470730272);
     lv_obj_set_width(ui_Image6, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Image6, LV_SIZE_CONTENT);    /// 1
@@ -61,7 +73,7 @@ void ui_CurrentLaneToggle_screen_init(void)
     lv_obj_add_flag(ui_Image6, LV_OBJ_FLAG_ADV_HITTEST);     /// Flags
     lv_obj_clear_flag(ui_Image6, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
-    ui_Label23 = lv_label_create(ui_Button10);
+    ui_Label23 = lv_label_create(ui_BackLaneToggle);
     lv_obj_set_width(ui_Label23, LV_SIZE_CONTENT);   /// 1
     lv_obj_set_height(ui_Label23, LV_SIZE_CONTENT);    /// 1
     lv_obj_set_x(ui_Label23, 2);
@@ -69,6 +81,6 @@ void ui_CurrentLaneToggle_screen_init(void)
     lv_obj_set_align(ui_Label23, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label23, "Back");
 
-    lv_obj_add_event_cb(ui_Button10, ui_event_Button10, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_BackLaneToggle, ui_event_BackLaneToggle, LV_EVENT_ALL, NULL);
 
 }

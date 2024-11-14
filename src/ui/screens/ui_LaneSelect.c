@@ -26,7 +26,7 @@ void ui_LaneSelect_screen_init(void)
 
     ui_ToolButtonContainer = lv_obj_create(ui_LaneSelect);
     lv_obj_remove_style_all(ui_ToolButtonContainer);
-    lv_obj_set_width(ui_ToolButtonContainer, 388);
+    lv_obj_set_width(ui_ToolButtonContainer, 413);
     lv_obj_set_height(ui_ToolButtonContainer, 50);
     lv_obj_set_align(ui_ToolButtonContainer, LV_ALIGN_CENTER);
     lv_obj_clear_flag(ui_ToolButtonContainer, LV_OBJ_FLAG_CLICKABLE | LV_OBJ_FLAG_SCROLLABLE);      /// Flags
@@ -39,6 +39,10 @@ void ui_LaneSelect_screen_init(void)
     lv_obj_set_align(ui_Tool0Button, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Tool0Button, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Tool0Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Tool0Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Tool0Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
     lv_obj_set_style_bg_img_src(ui_Tool0Button, &ui_img_642937331, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Tool1Button = lv_btn_create(ui_ToolButtonContainer);
@@ -49,6 +53,10 @@ void ui_LaneSelect_screen_init(void)
     lv_obj_set_align(ui_Tool1Button, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Tool1Button, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Tool1Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Tool1Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Tool1Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
     lv_obj_set_style_bg_img_src(ui_Tool1Button, &ui_img_642936306, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Tool2Button = lv_btn_create(ui_ToolButtonContainer);
@@ -59,6 +67,10 @@ void ui_LaneSelect_screen_init(void)
     lv_obj_set_align(ui_Tool2Button, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Tool2Button, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Tool2Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Tool2Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Tool2Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
     lv_obj_set_style_bg_img_src(ui_Tool2Button, &ui_img_642943729, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Tool3Button = lv_btn_create(ui_ToolButtonContainer);
@@ -69,17 +81,95 @@ void ui_LaneSelect_screen_init(void)
     lv_obj_set_align(ui_Tool3Button, LV_ALIGN_CENTER);
     lv_obj_add_flag(ui_Tool3Button, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
     lv_obj_clear_flag(ui_Tool3Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Tool3Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Tool3Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
     lv_obj_set_style_bg_img_src(ui_Tool3Button, &ui_img_642942704, LV_PART_MAIN | LV_STATE_DEFAULT);
 
-    ui_Button6 = lv_btn_create(ui_LaneSelect);
-    lv_obj_set_width(ui_Button6, 100);
-    lv_obj_set_height(ui_Button6, 50);
-    lv_obj_set_x(ui_Button6, -261);
-    lv_obj_set_y(ui_Button6, 55);
-    lv_obj_set_align(ui_Button6, LV_ALIGN_CENTER);
-    lv_obj_add_flag(ui_Button6, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Button6, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_img_src(ui_Button6, &ui_img_settings_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_Tool4Button = lv_btn_create(ui_ToolButtonContainer);
+    lv_obj_set_width(ui_Tool4Button, 50);
+    lv_obj_set_height(ui_Tool4Button, 50);
+    lv_obj_set_x(ui_Tool4Button, -150);
+    lv_obj_set_y(ui_Tool4Button, 0);
+    lv_obj_set_align(ui_Tool4Button, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Tool4Button, LV_OBJ_FLAG_HIDDEN | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Tool4Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Tool4Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Tool4Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
+    lv_obj_set_style_bg_img_src(ui_Tool4Button, &ui_img_642941679, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Tool5Button = lv_btn_create(ui_ToolButtonContainer);
+    lv_obj_set_width(ui_Tool5Button, 50);
+    lv_obj_set_height(ui_Tool5Button, 50);
+    lv_obj_set_x(ui_Tool5Button, -50);
+    lv_obj_set_y(ui_Tool5Button, 0);
+    lv_obj_set_align(ui_Tool5Button, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Tool5Button, LV_OBJ_FLAG_HIDDEN | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Tool5Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Tool5Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Tool5Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
+    lv_obj_set_style_bg_img_src(ui_Tool5Button, &ui_img_642940654, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Tool6Button = lv_btn_create(ui_ToolButtonContainer);
+    lv_obj_set_width(ui_Tool6Button, 50);
+    lv_obj_set_height(ui_Tool6Button, 50);
+    lv_obj_set_x(ui_Tool6Button, 50);
+    lv_obj_set_y(ui_Tool6Button, 0);
+    lv_obj_set_align(ui_Tool6Button, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Tool6Button, LV_OBJ_FLAG_HIDDEN | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Tool6Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Tool6Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Tool6Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
+    lv_obj_set_style_bg_img_src(ui_Tool6Button, &ui_img_642948077, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_Tool7Button = lv_btn_create(ui_ToolButtonContainer);
+    lv_obj_set_width(ui_Tool7Button, 50);
+    lv_obj_set_height(ui_Tool7Button, 50);
+    lv_obj_set_x(ui_Tool7Button, 150);
+    lv_obj_set_y(ui_Tool7Button, 0);
+    lv_obj_set_align(ui_Tool7Button, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_Tool7Button, LV_OBJ_FLAG_HIDDEN | LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_Tool7Button, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_Tool7Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_Tool7Button, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
+    lv_obj_set_style_bg_img_src(ui_Tool7Button, &ui_img_642947052, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_SettingsButton = lv_btn_create(ui_LaneSelect);
+    lv_obj_set_width(ui_SettingsButton, 100);
+    lv_obj_set_height(ui_SettingsButton, 50);
+    lv_obj_set_x(ui_SettingsButton, -261);
+    lv_obj_set_y(ui_SettingsButton, 55);
+    lv_obj_set_align(ui_SettingsButton, LV_ALIGN_CENTER);
+    lv_obj_add_flag(ui_SettingsButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_SettingsButton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_SettingsButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_SettingsButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
+    lv_obj_set_style_bg_img_src(ui_SettingsButton, &ui_img_settings_png, LV_PART_MAIN | LV_STATE_DEFAULT);
+
+    ui_ControlButton = lv_btn_create(ui_LaneSelect);
+    lv_obj_set_width(ui_ControlButton, 100);
+    lv_obj_set_height(ui_ControlButton, 50);
+    lv_obj_set_x(ui_ControlButton, 10);
+    lv_obj_set_y(ui_ControlButton, -65);
+    lv_obj_set_align(ui_ControlButton, LV_ALIGN_BOTTOM_LEFT);
+    lv_obj_add_flag(ui_ControlButton, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
+    lv_obj_clear_flag(ui_ControlButton, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
+    ui_object_set_themeable_style_property(ui_ControlButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_COLOR,
+                                           _ui_theme_color_Blue);
+    ui_object_set_themeable_style_property(ui_ControlButton, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_OPA,
+                                           _ui_theme_alpha_Blue);
+    lv_obj_set_style_bg_img_src(ui_ControlButton, &ui_img_986727804, LV_PART_MAIN | LV_STATE_DEFAULT);
 
     ui_Panel4 = lv_obj_create(ui_LaneSelect);
     lv_obj_set_width(ui_Panel4, 68);
@@ -152,6 +242,7 @@ void ui_LaneSelect_screen_init(void)
     lv_obj_set_x(ui_Label2, -13);
     lv_obj_set_y(ui_Label2, 7);
     lv_label_set_text(ui_Label2, "Status:");
+    lv_obj_add_flag(ui_Printstatus, LV_OBJ_FLAG_HIDDEN);
 
     ui_Label3 = lv_label_create(ui_Printstatus);
     lv_obj_set_width(ui_Label3, LV_SIZE_CONTENT);   /// 1
@@ -207,27 +298,28 @@ void ui_LaneSelect_screen_init(void)
     lv_obj_set_align(ui_GifPanel, LV_ALIGN_BOTTOM_LEFT);
     lv_obj_add_flag(ui_GifPanel, LV_OBJ_FLAG_HIDDEN);     /// Flags
     lv_obj_clear_flag(ui_GifPanel, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-
-    ui_Button9 = lv_btn_create(ui_LaneSelect);
-    lv_obj_set_width(ui_Button9, 100);
-    lv_obj_set_height(ui_Button9, 50);
-    lv_obj_set_x(ui_Button9, 10);
-    lv_obj_set_y(ui_Button9, -65);
-    lv_obj_set_align(ui_Button9, LV_ALIGN_BOTTOM_LEFT);
-    lv_obj_add_flag(ui_Button9, LV_OBJ_FLAG_SCROLL_ON_FOCUS);     /// Flags
-    lv_obj_clear_flag(ui_Button9, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
-    lv_obj_set_style_bg_img_src(ui_Button9, &ui_img_986727804, LV_PART_MAIN | LV_STATE_DEFAULT);
+    ui_object_set_themeable_style_property(ui_GifPanel, LV_PART_MAIN | LV_STATE_DEFAULT, LV_STYLE_BG_GRAD_COLOR,
+                                           _ui_theme_color_Blue);
 
     lv_obj_add_event_cb(ui_Tool0Button, ui_event_Tool0Button, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Tool1Button, ui_event_Tool1Button, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Tool2Button, ui_event_Tool2Button, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Tool3Button, ui_event_Tool3Button, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Button6, ui_event_Button6, LV_EVENT_ALL, NULL);
-    lv_obj_add_event_cb(ui_Button9, ui_event_Button9, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Tool4Button, ui_event_Tool4Button, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Tool5Button, ui_event_Tool5Button, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Tool6Button, ui_event_Tool6Button, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_Tool7Button, ui_event_Tool7Button, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ToolButtonContainer, ui_event_ToolButtonContainer, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_SettingsButton, ui_event_SettingsButton, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_ControlButton, ui_event_ControlButton, LV_EVENT_ALL, NULL);
     uic_Tool0Button = ui_Tool0Button;
     uic_Tool1Button = ui_Tool1Button;
     uic_Tool2Button = ui_Tool2Button;
     uic_Tool3Button = ui_Tool3Button;
+    uic_Tool4Button = ui_Tool4Button;
+    uic_Tool5Button = ui_Tool5Button;
+    uic_Tool6Button = ui_Tool6Button;
+    uic_Tool7Button = ui_Tool7Button;
     uic_CurrentNozzleTemp = ui_CurrentNozzleTemp;
 
 }
