@@ -14,6 +14,9 @@ extern "C" {
 
 #include "ui_helpers.h"
 #include "ui_events.h"
+#include "ui_theme_manager.h"
+#include "ui_themes.h"
+#include "../ui_functions.h"
 
 void GifPop_Animation(lv_obj_t * TargetObject, int delay);
 
@@ -22,6 +25,7 @@ void ui_LaneSelect_screen_init(void);
 extern lv_obj_t * ui_LaneSelect;
 extern lv_obj_t * ui_TitlePanel;
 extern lv_obj_t * ui_TitleText;
+void ui_event_ToolButtonContainer(lv_event_t * e);
 extern lv_obj_t * ui_ToolButtonContainer;
 void ui_event_Tool0Button(lv_event_t * e);
 extern lv_obj_t * ui_Tool0Button;
@@ -31,8 +35,18 @@ void ui_event_Tool2Button(lv_event_t * e);
 extern lv_obj_t * ui_Tool2Button;
 void ui_event_Tool3Button(lv_event_t * e);
 extern lv_obj_t * ui_Tool3Button;
-void ui_event_Button6(lv_event_t * e);
-extern lv_obj_t * ui_Button6;
+void ui_event_Tool4Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool4Button;
+void ui_event_Tool5Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool5Button;
+void ui_event_Tool6Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool6Button;
+void ui_event_Tool7Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool7Button;
+void ui_event_SettingsButton(lv_event_t * e);
+extern lv_obj_t * ui_SettingsButton;
+void ui_event_ControlButton(lv_event_t * e);
+extern lv_obj_t * ui_ControlButton;
 extern lv_obj_t * ui_Panel4;
 extern lv_obj_t * ui_Image1;
 extern lv_obj_t * ui_CurrentNozzleTemp;
@@ -49,13 +63,15 @@ extern lv_obj_t * ui_HubStatus;
 extern lv_obj_t * ui_ToolStatus;
 extern lv_obj_t * ui_Label17;
 extern lv_obj_t * ui_GifPanel;
-void ui_event_Button9(lv_event_t * e);
-extern lv_obj_t * ui_Button9;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_Tool0Button;
 extern lv_obj_t * uic_Tool1Button;
 extern lv_obj_t * uic_Tool2Button;
 extern lv_obj_t * uic_Tool3Button;
+extern lv_obj_t * uic_Tool4Button;
+extern lv_obj_t * uic_Tool5Button;
+extern lv_obj_t * uic_Tool6Button;
+extern lv_obj_t * uic_Tool7Button;
 extern lv_obj_t * uic_CurrentNozzleTemp;
 
 // SCREEN: ui_CurrentLaneToggle
@@ -66,8 +82,8 @@ extern lv_obj_t * ui_ActivateLane;
 extern lv_obj_t * ui_ActivateLaneLabel;
 extern lv_obj_t * ui_EjectLane;
 extern lv_obj_t * ui_EjectLaneLabel;
-void ui_event_Button10(lv_event_t * e);
-extern lv_obj_t * ui_Button10;
+void ui_event_BackLaneToggle(lv_event_t * e);
+extern lv_obj_t * ui_BackLaneToggle;
 extern lv_obj_t * ui_Image6;
 extern lv_obj_t * ui_Label23;
 // CUSTOM VARIABLES
@@ -101,20 +117,20 @@ void ui_ColorSettings_screen_init(void);
 extern lv_obj_t * ui_ColorSettings;
 extern lv_obj_t * ui_Panel6;
 extern lv_obj_t * ui_Label1;
-void ui_event_Button2(lv_event_t * e);
-extern lv_obj_t * ui_Button2;
+void ui_event_SetActiveColor(lv_event_t * e);
+extern lv_obj_t * ui_SetActiveColor;
 extern lv_obj_t * ui_Label5;
-void ui_event_Button3(lv_event_t * e);
-extern lv_obj_t * ui_Button3;
+void ui_event_SetLoadedColor(lv_event_t * e);
+extern lv_obj_t * ui_SetLoadedColor;
 extern lv_obj_t * ui_Label6;
-void ui_event_Button4(lv_event_t * e);
-extern lv_obj_t * ui_Button4;
+void ui_event_SetButtonColor(lv_event_t * e);
+extern lv_obj_t * ui_SetButtonColor;
 extern lv_obj_t * ui_Label18;
-void ui_event_Button5(lv_event_t * e);
-extern lv_obj_t * ui_Button5;
+void ui_event_SetUnloadedColor(lv_event_t * e);
+extern lv_obj_t * ui_SetUnloadedColor;
 extern lv_obj_t * ui_Label19;
-void ui_event_Button12(lv_event_t * e);
-extern lv_obj_t * ui_Button12;
+void ui_event_BackColorSettings(lv_event_t * e);
+extern lv_obj_t * ui_BackColorSettings;
 extern lv_obj_t * ui_Image8;
 extern lv_obj_t * ui_Label25;
 // CUSTOM VARIABLES
@@ -123,12 +139,12 @@ extern lv_obj_t * ui_Label25;
 void ui_ColorSelect_screen_init(void);
 extern lv_obj_t * ui_ColorSelect;
 extern lv_obj_t * ui_Colorwheel1;
-void ui_event_Button7(lv_event_t * e);
-extern lv_obj_t * ui_Button7;
+void ui_event_ReturnColorSelect(lv_event_t * e);
+extern lv_obj_t * ui_ReturnColorSelect;
 extern lv_obj_t * ui_Image3;
 extern lv_obj_t * ui_Label20;
-void ui_event_Button8(lv_event_t * e);
-extern lv_obj_t * ui_Button8;
+void ui_event_SaveColorSelect(lv_event_t * e);
+extern lv_obj_t * ui_SaveColorSelect;
 extern lv_obj_t * ui_Image4;
 extern lv_obj_t * ui_Label21;
 // CUSTOM VARIABLES
@@ -142,19 +158,19 @@ LV_IMG_DECLARE(ui_img_642937331);    // assets/extruder-0.png
 LV_IMG_DECLARE(ui_img_642936306);    // assets/extruder-1.png
 LV_IMG_DECLARE(ui_img_642943729);    // assets/extruder-2.png
 LV_IMG_DECLARE(ui_img_642942704);    // assets/extruder-3.png
+LV_IMG_DECLARE(ui_img_642941679);    // assets/extruder-4.png
+LV_IMG_DECLARE(ui_img_642940654);    // assets/extruder-5.png
+LV_IMG_DECLARE(ui_img_642948077);    // assets/extruder-6.png
+LV_IMG_DECLARE(ui_img_642947052);    // assets/extruder-7.png
 LV_IMG_DECLARE(ui_img_settings_png);    // assets/settings.png
+LV_IMG_DECLARE(ui_img_986727804);    // assets/fine-tune.png
 LV_IMG_DECLARE(ui_img_filament_png);    // assets/filament.png
 LV_IMG_DECLARE(ui_img_bed_png);    // assets/bed.png
-LV_IMG_DECLARE(ui_img_986727804);    // assets/fine-tune.png
 LV_IMG_DECLARE(ui_img_1470730272);    // assets/arrow-left.png
 LV_IMG_DECLARE(ui_img_complete_png);    // assets/complete.png
 LV_IMG_DECLARE(ui_img_922480046);    // assets/2602507-200.png
 LV_IMG_DECLARE(ui_img_539412392);    // assets/extruder-10.png
 LV_IMG_DECLARE(ui_img_542316787);    // assets/extruder-11.png
-LV_IMG_DECLARE(ui_img_642941679);    // assets/extruder-4.png
-LV_IMG_DECLARE(ui_img_642940654);    // assets/extruder-5.png
-LV_IMG_DECLARE(ui_img_642948077);    // assets/extruder-6.png
-LV_IMG_DECLARE(ui_img_642947052);    // assets/extruder-7.png
 LV_IMG_DECLARE(ui_img_642946043);    // assets/extruder-8.png
 LV_IMG_DECLARE(ui_img_642945018);    // assets/extruder-9.png
 LV_IMG_DECLARE(ui_img_print_bar1_png);    // assets/print_bar1.png

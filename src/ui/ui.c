@@ -15,6 +15,7 @@ void ui_LaneSelect_screen_init(void);
 lv_obj_t * ui_LaneSelect;
 lv_obj_t * ui_TitlePanel;
 lv_obj_t * ui_TitleText;
+void ui_event_ToolButtonContainer(lv_event_t * e);
 lv_obj_t * ui_ToolButtonContainer;
 void ui_event_Tool0Button(lv_event_t * e);
 lv_obj_t * ui_Tool0Button;
@@ -24,8 +25,18 @@ void ui_event_Tool2Button(lv_event_t * e);
 lv_obj_t * ui_Tool2Button;
 void ui_event_Tool3Button(lv_event_t * e);
 lv_obj_t * ui_Tool3Button;
-void ui_event_Button6(lv_event_t * e);
-lv_obj_t * ui_Button6;
+void ui_event_Tool4Button(lv_event_t * e);
+lv_obj_t * ui_Tool4Button;
+void ui_event_Tool5Button(lv_event_t * e);
+lv_obj_t * ui_Tool5Button;
+void ui_event_Tool6Button(lv_event_t * e);
+lv_obj_t * ui_Tool6Button;
+void ui_event_Tool7Button(lv_event_t * e);
+lv_obj_t * ui_Tool7Button;
+void ui_event_SettingsButton(lv_event_t * e);
+lv_obj_t * ui_SettingsButton;
+void ui_event_ControlButton(lv_event_t * e);
+lv_obj_t * ui_ControlButton;
 lv_obj_t * ui_Panel4;
 lv_obj_t * ui_Image1;
 lv_obj_t * ui_CurrentNozzleTemp;
@@ -42,13 +53,15 @@ lv_obj_t * ui_HubStatus;
 lv_obj_t * ui_ToolStatus;
 lv_obj_t * ui_Label17;
 lv_obj_t * ui_GifPanel;
-void ui_event_Button9(lv_event_t * e);
-lv_obj_t * ui_Button9;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Tool0Button;
 lv_obj_t * uic_Tool1Button;
 lv_obj_t * uic_Tool2Button;
 lv_obj_t * uic_Tool3Button;
+lv_obj_t * uic_Tool4Button;
+lv_obj_t * uic_Tool5Button;
+lv_obj_t * uic_Tool6Button;
+lv_obj_t * uic_Tool7Button;
 lv_obj_t * uic_CurrentNozzleTemp;
 
 
@@ -60,8 +73,8 @@ lv_obj_t * ui_ActivateLane;
 lv_obj_t * ui_ActivateLaneLabel;
 lv_obj_t * ui_EjectLane;
 lv_obj_t * ui_EjectLaneLabel;
-void ui_event_Button10(lv_event_t * e);
-lv_obj_t * ui_Button10;
+void ui_event_BackLaneToggle(lv_event_t * e);
+lv_obj_t * ui_BackLaneToggle;
 lv_obj_t * ui_Image6;
 lv_obj_t * ui_Label23;
 // CUSTOM VARIABLES
@@ -97,20 +110,20 @@ void ui_ColorSettings_screen_init(void);
 lv_obj_t * ui_ColorSettings;
 lv_obj_t * ui_Panel6;
 lv_obj_t * ui_Label1;
-void ui_event_Button2(lv_event_t * e);
-lv_obj_t * ui_Button2;
+void ui_event_SetActiveColor(lv_event_t * e);
+lv_obj_t * ui_SetActiveColor;
 lv_obj_t * ui_Label5;
-void ui_event_Button3(lv_event_t * e);
-lv_obj_t * ui_Button3;
+void ui_event_SetLoadedColor(lv_event_t * e);
+lv_obj_t * ui_SetLoadedColor;
 lv_obj_t * ui_Label6;
-void ui_event_Button4(lv_event_t * e);
-lv_obj_t * ui_Button4;
+void ui_event_SetButtonColor(lv_event_t * e);
+lv_obj_t * ui_SetButtonColor;
 lv_obj_t * ui_Label18;
-void ui_event_Button5(lv_event_t * e);
-lv_obj_t * ui_Button5;
+void ui_event_SetUnloadedColor(lv_event_t * e);
+lv_obj_t * ui_SetUnloadedColor;
 lv_obj_t * ui_Label19;
-void ui_event_Button12(lv_event_t * e);
-lv_obj_t * ui_Button12;
+void ui_event_BackColorSettings(lv_event_t * e);
+lv_obj_t * ui_BackColorSettings;
 lv_obj_t * ui_Image8;
 lv_obj_t * ui_Label25;
 // CUSTOM VARIABLES
@@ -120,12 +133,12 @@ lv_obj_t * ui_Label25;
 void ui_ColorSelect_screen_init(void);
 lv_obj_t * ui_ColorSelect;
 lv_obj_t * ui_Colorwheel1;
-void ui_event_Button7(lv_event_t * e);
-lv_obj_t * ui_Button7;
+void ui_event_ReturnColorSelect(lv_event_t * e);
+lv_obj_t * ui_ReturnColorSelect;
 lv_obj_t * ui_Image3;
 lv_obj_t * ui_Label20;
-void ui_event_Button8(lv_event_t * e);
-lv_obj_t * ui_Button8;
+void ui_event_SaveColorSelect(lv_event_t * e);
+lv_obj_t * ui_SaveColorSelect;
 lv_obj_t * ui_Image4;
 lv_obj_t * ui_Label21;
 // CUSTOM VARIABLES
@@ -189,12 +202,39 @@ void GifPop_Animation(lv_obj_t * TargetObject, int delay)
 }
 
 ///////////////////// FUNCTIONS ////////////////////
+void ui_event_ToolButtonContainer(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_flag_modify(ui_Tool7Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_Tool6Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_Tool5Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_Tool4Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_Tool3Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Tool2Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Tool1Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Tool0Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+    }
+    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
+        lv_indev_wait_release(lv_indev_get_act());
+        _ui_flag_modify(ui_Tool7Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Tool6Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Tool5Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Tool4Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
+        _ui_flag_modify(ui_Tool3Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_Tool2Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_Tool1Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+        _ui_flag_modify(ui_Tool0Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
+    }
+}
+
 void ui_event_Tool0Button(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        TestFunc(e);
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -226,7 +266,43 @@ void ui_event_Tool3Button(lv_event_t * e)
     }
 }
 
-void ui_event_Button6(lv_event_t * e)
+void ui_event_Tool4Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
+    }
+}
+
+void ui_event_Tool5Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
+    }
+}
+
+void ui_event_Tool6Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
+    }
+}
+
+void ui_event_Tool7Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
+    }
+}
+
+void ui_event_SettingsButton(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -235,7 +311,7 @@ void ui_event_Button6(lv_event_t * e)
     }
 }
 
-void ui_event_Button9(lv_event_t * e)
+void ui_event_ControlButton(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -244,7 +320,7 @@ void ui_event_Button9(lv_event_t * e)
     }
 }
 
-void ui_event_Button10(lv_event_t * e)
+void ui_event_BackLaneToggle(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -262,43 +338,47 @@ void ui_event_Button11(lv_event_t * e)
     }
 }
 
-void ui_event_Button2(lv_event_t * e)
+void ui_event_SetActiveColor(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_ColorSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ColorSelect_screen_init);
+    colorChangeState = 1;
     }
 }
 
-void ui_event_Button3(lv_event_t * e)
+void ui_event_SetLoadedColor(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_ColorSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ColorSelect_screen_init);
+    colorChangeState =2;
     }
 }
 
-void ui_event_Button4(lv_event_t * e)
+void ui_event_SetButtonColor(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_ColorSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ColorSelect_screen_init);
+    colorChangeState = 4;
     }
 }
 
-void ui_event_Button5(lv_event_t * e)
+void ui_event_SetUnloadedColor(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_ColorSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ColorSelect_screen_init);
+    colorChangeState =3;
     }
 }
 
-void ui_event_Button12(lv_event_t * e)
+void ui_event_BackColorSettings(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -307,21 +387,43 @@ void ui_event_Button12(lv_event_t * e)
     }
 }
 
-void ui_event_Button7(lv_event_t * e)
+void ui_event_ReturnColorSelect(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_ColorSettings, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_ColorSettings_screen_init);
+        colorChangeState = -1;
     }
 }
 
-void ui_event_Button8(lv_event_t * e)
+void ui_event_SaveColorSelect(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_LaneSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_LaneSelect_screen_init);
+        saveColorWheel(e);
+        switch (colorChangeState){
+            case 1:
+                    setActiveColor(e);
+                    colorChangeState = -1;
+                break;
+            case 2:
+                    setLoadedColor(e);
+                    colorChangeState = -1;
+                break;
+            case 3:
+                    setUnloadedColor(e);
+                    colorChangeState = -1;
+                break;
+            case 4:
+                    setButtonColor(e);
+                    colorChangeState = -1;
+                break;
+            case -1:
+                break;
+        }
     }
 }
 
