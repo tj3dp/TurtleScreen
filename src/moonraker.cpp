@@ -205,6 +205,11 @@ void MOONRAKER::get_printer_info(void) {
                          json_parse["state"]["flags"]["paused"].as<bool>();
             data.printing = json_parse["state"]["flags"]["printing"].as<bool>() ||
                             json_parse["state"]["flags"]["cancelling"].as<bool>() || data.pause;
+            data.pause = json_parse["state"]["flags"]["pausing"].as<bool>();        // pausing
+            data.pause |= json_parse["state"]["flags"]["paused"].as<bool>();        // paused
+            data.printing = json_parse["state"]["flags"]["printing"].as<bool>();    // printing
+            data.printing |= json_parse["state"]["flags"]["cancelling"].as<bool>(); // cancelling
+            data.printing |= data.pause;                                            // pause
 
             // Safely parse temperatures, converting to integer values
             data.bed_actual = int16_t(json_parse["temperature"]["bed"]["actual"].as<double>() + 0.5f);

@@ -45,6 +45,10 @@ void fetchDataTask(void *pvParameters)
             if(!moonraker.unready){
                 moonraker.get_AFC_status();
                 moonraker.get_printer_info();
+                if(moonraker.data.printing)
+                {
+                    moonraker.get_progress();
+                }
             }
         }
         else
