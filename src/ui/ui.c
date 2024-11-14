@@ -15,7 +15,6 @@ void ui_LaneSelect_screen_init(void);
 lv_obj_t * ui_LaneSelect;
 lv_obj_t * ui_TitlePanel;
 lv_obj_t * ui_TitleText;
-void ui_event_ToolButtonContainer(lv_event_t * e);
 lv_obj_t * ui_ToolButtonContainer;
 void ui_event_Tool0Button(lv_event_t * e);
 lv_obj_t * ui_Tool0Button;
@@ -33,6 +32,14 @@ void ui_event_Tool6Button(lv_event_t * e);
 lv_obj_t * ui_Tool6Button;
 void ui_event_Tool7Button(lv_event_t * e);
 lv_obj_t * ui_Tool7Button;
+void ui_event_Tool8Button(lv_event_t * e);
+lv_obj_t * ui_Tool8Button;
+void ui_event_Tool9Button(lv_event_t * e);
+lv_obj_t * ui_Tool9Button;
+void ui_event_Tool10Button(lv_event_t * e);
+lv_obj_t * ui_Tool10Button;
+void ui_event_Tool11Button(lv_event_t * e);
+lv_obj_t * ui_Tool11Button;
 void ui_event_SettingsButton(lv_event_t * e);
 lv_obj_t * ui_SettingsButton;
 void ui_event_ControlButton(lv_event_t * e);
@@ -53,6 +60,8 @@ lv_obj_t * ui_HubStatus;
 lv_obj_t * ui_ToolStatus;
 lv_obj_t * ui_Label17;
 lv_obj_t * ui_GifPanel;
+lv_obj_t * ui_NextTools;
+lv_obj_t * ui_PreviousTools;
 // CUSTOM VARIABLES
 lv_obj_t * uic_Tool0Button;
 lv_obj_t * uic_Tool1Button;
@@ -62,6 +71,10 @@ lv_obj_t * uic_Tool4Button;
 lv_obj_t * uic_Tool5Button;
 lv_obj_t * uic_Tool6Button;
 lv_obj_t * uic_Tool7Button;
+lv_obj_t * uic_Tool8Button;
+lv_obj_t * uic_Tool9Button;
+lv_obj_t * uic_Tool10Button;
+lv_obj_t * uic_Tool11Button;
 lv_obj_t * uic_CurrentNozzleTemp;
 
 
@@ -202,34 +215,6 @@ void GifPop_Animation(lv_obj_t * TargetObject, int delay)
 }
 
 ///////////////////// FUNCTIONS ////////////////////
-void ui_event_ToolButtonContainer(lv_event_t * e)
-{
-    lv_event_code_t event_code = lv_event_get_code(e);
-
-    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_LEFT) {
-        lv_indev_wait_release(lv_indev_get_act());
-        _ui_flag_modify(ui_Tool7Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_Tool6Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_Tool5Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_Tool4Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_Tool3Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_Tool2Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_Tool1Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_Tool0Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-    }
-    if(event_code == LV_EVENT_GESTURE &&  lv_indev_get_gesture_dir(lv_indev_get_act()) == LV_DIR_RIGHT) {
-        lv_indev_wait_release(lv_indev_get_act());
-        _ui_flag_modify(ui_Tool7Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_Tool6Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_Tool5Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_Tool4Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_ADD);
-        _ui_flag_modify(ui_Tool3Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_Tool2Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_Tool1Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-        _ui_flag_modify(ui_Tool0Button, LV_OBJ_FLAG_HIDDEN, _UI_MODIFY_FLAG_REMOVE);
-    }
-}
-
 void ui_event_Tool0Button(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
@@ -294,6 +279,42 @@ void ui_event_Tool6Button(lv_event_t * e)
 }
 
 void ui_event_Tool7Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
+    }
+}
+
+void ui_event_Tool8Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
+    }
+}
+
+void ui_event_Tool9Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
+    }
+}
+
+void ui_event_Tool10Button(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
+    }
+}
+
+void ui_event_Tool11Button(lv_event_t * e)
 {
     lv_event_code_t event_code = lv_event_get_code(e);
 
@@ -424,6 +445,7 @@ void ui_event_SaveColorSelect(lv_event_t * e)
             case -1:
                 break;
         }
+        colorChangeState = -1;
     }
 }
 

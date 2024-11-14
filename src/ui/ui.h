@@ -11,12 +11,12 @@ extern "C" {
 #endif
 
 #include "../../lib/lvgl/lvgl.h"
+#include "../ui_functions.h"
 
 #include "ui_helpers.h"
 #include "ui_events.h"
 #include "ui_theme_manager.h"
 #include "ui_themes.h"
-#include "../ui_functions.h"
 
 void GifPop_Animation(lv_obj_t * TargetObject, int delay);
 
@@ -25,7 +25,6 @@ void ui_LaneSelect_screen_init(void);
 extern lv_obj_t * ui_LaneSelect;
 extern lv_obj_t * ui_TitlePanel;
 extern lv_obj_t * ui_TitleText;
-void ui_event_ToolButtonContainer(lv_event_t * e);
 extern lv_obj_t * ui_ToolButtonContainer;
 void ui_event_Tool0Button(lv_event_t * e);
 extern lv_obj_t * ui_Tool0Button;
@@ -43,6 +42,14 @@ void ui_event_Tool6Button(lv_event_t * e);
 extern lv_obj_t * ui_Tool6Button;
 void ui_event_Tool7Button(lv_event_t * e);
 extern lv_obj_t * ui_Tool7Button;
+void ui_event_Tool8Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool8Button;
+void ui_event_Tool9Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool9Button;
+void ui_event_Tool10Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool10Button;
+void ui_event_Tool11Button(lv_event_t * e);
+extern lv_obj_t * ui_Tool11Button;
 void ui_event_SettingsButton(lv_event_t * e);
 extern lv_obj_t * ui_SettingsButton;
 void ui_event_ControlButton(lv_event_t * e);
@@ -63,6 +70,8 @@ extern lv_obj_t * ui_HubStatus;
 extern lv_obj_t * ui_ToolStatus;
 extern lv_obj_t * ui_Label17;
 extern lv_obj_t * ui_GifPanel;
+extern lv_obj_t * ui_NextTools;
+extern lv_obj_t * ui_PreviousTools;
 // CUSTOM VARIABLES
 extern lv_obj_t * uic_Tool0Button;
 extern lv_obj_t * uic_Tool1Button;
@@ -72,6 +81,10 @@ extern lv_obj_t * uic_Tool4Button;
 extern lv_obj_t * uic_Tool5Button;
 extern lv_obj_t * uic_Tool6Button;
 extern lv_obj_t * uic_Tool7Button;
+extern lv_obj_t * uic_Tool8Button;
+extern lv_obj_t * uic_Tool9Button;
+extern lv_obj_t * uic_Tool10Button;
+extern lv_obj_t * uic_Tool11Button;
 extern lv_obj_t * uic_CurrentNozzleTemp;
 
 // SCREEN: ui_CurrentLaneToggle
@@ -162,17 +175,18 @@ LV_IMG_DECLARE(ui_img_642941679);    // assets/extruder-4.png
 LV_IMG_DECLARE(ui_img_642940654);    // assets/extruder-5.png
 LV_IMG_DECLARE(ui_img_642948077);    // assets/extruder-6.png
 LV_IMG_DECLARE(ui_img_642947052);    // assets/extruder-7.png
+LV_IMG_DECLARE(ui_img_642946043);    // assets/extruder-8.png
+LV_IMG_DECLARE(ui_img_642945018);    // assets/extruder-9.png
+LV_IMG_DECLARE(ui_img_539412392);    // assets/extruder-10.png
+LV_IMG_DECLARE(ui_img_542316787);    // assets/extruder-11.png
 LV_IMG_DECLARE(ui_img_settings_png);    // assets/settings.png
 LV_IMG_DECLARE(ui_img_986727804);    // assets/fine-tune.png
 LV_IMG_DECLARE(ui_img_filament_png);    // assets/filament.png
 LV_IMG_DECLARE(ui_img_bed_png);    // assets/bed.png
+LV_IMG_DECLARE(ui_img_309409143);    // assets/arrow-right.png
 LV_IMG_DECLARE(ui_img_1470730272);    // assets/arrow-left.png
 LV_IMG_DECLARE(ui_img_complete_png);    // assets/complete.png
 LV_IMG_DECLARE(ui_img_922480046);    // assets/2602507-200.png
-LV_IMG_DECLARE(ui_img_539412392);    // assets/extruder-10.png
-LV_IMG_DECLARE(ui_img_542316787);    // assets/extruder-11.png
-LV_IMG_DECLARE(ui_img_642946043);    // assets/extruder-8.png
-LV_IMG_DECLARE(ui_img_642945018);    // assets/extruder-9.png
 LV_IMG_DECLARE(ui_img_print_bar1_png);    // assets/print_bar1.png
 LV_IMG_DECLARE(ui_img_print_bar2_png);    // assets/print_bar2.png
 

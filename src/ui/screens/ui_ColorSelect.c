@@ -11,6 +11,7 @@ void ui_ColorSelect_screen_init(void)
     lv_obj_clear_flag(ui_ColorSelect, LV_OBJ_FLAG_SCROLLABLE);      /// Flags
 
     ui_Colorwheel1 = lv_colorwheel_create(ui_ColorSelect, true);
+    lv_colorwheel_set_mode_fixed(ui_Colorwheel1, true);
     lv_obj_set_width(ui_Colorwheel1, 150);
     lv_obj_set_height(ui_Colorwheel1, 150);
     lv_obj_set_align(ui_Colorwheel1, LV_ALIGN_CENTER);
