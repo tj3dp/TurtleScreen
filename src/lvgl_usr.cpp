@@ -121,16 +121,23 @@ void lvgl_toggle_current_print_panel() {
     }
 }
 
-void lvgl_update_print_progress(){
-    if(moonraker.data.printing){
-        char* progressBuffer = (char*)malloc(4);
-            if (progressBuffer != NULL) {
-                snprintf(progressBuffer, 4, "%u", moonraker.data.progress);
+void lvgl_update_print_progress() {
+    if (moonraker.data.printing) {
+        uint8_t progress = moonraker.data.progress > 100 ? 100 : moonraker.data.progress;
+
+        const char *currentLabel = lv_label_get_text(ui_PercentComplete);
+        char currentProgressBuffer[5];
+        snprintf(currentProgressBuffer, sizeof(currentProgressBuffer), "%u", progress);
+
+        if (strcmp(currentLabel, currentProgressBuffer) == 0) {
+            return; 
         }
-        lv_label_set_text(ui_PercentComplete, progressBuffer);
-        lv_bar_set_value(ui_PrintProgressBar, moonraker.data.progress, LV_ANIM_ON);
+
+        lv_label_set_text(ui_PercentComplete, currentProgressBuffer);
+        lv_bar_set_value(ui_PrintProgressBar, progress, LV_ANIM_ON);
     }
 }
+
 
 void lvgl_set_print_label(){
     if(moonraker.data.printing){
