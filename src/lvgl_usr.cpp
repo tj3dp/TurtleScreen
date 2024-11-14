@@ -114,7 +114,7 @@ void lvgl_toggle_current_print_panel() {
             lv_obj_clear_flag(ui_Printstatus, LV_OBJ_FLAG_HIDDEN);
         }
     } else {
-        if (printStatusHidden) {
+        if (!printStatusHidden) {
             lv_obj_add_flag(ui_Printstatus, LV_OBJ_FLAG_HIDDEN);
         }
         lv_obj_clear_flag(ui_SwitchStatusPanel, LV_OBJ_FLAG_HIDDEN);
@@ -128,15 +128,20 @@ void lvgl_update_print_progress(){
                 snprintf(progressBuffer, 4, "%u", moonraker.data.progress);
         }
         lv_label_set_text(ui_PercentComplete, progressBuffer);
+        lv_bar_set_value(ui_PrintProgressBar, moonraker.data.progress, LV_ANIM_ON);
     }
-
 }
 
 void lvgl_set_print_label(){
     if(moonraker.data.printing){
         lv_label_set_text(ui_Label3, moonraker.data.file_path);
     }
+}
 
+void lvgl_more_lanes_toggle_show(){
+    if(numUnits > 1){
+
+    }
 }
 
 void lvgl_set_params(){
@@ -149,6 +154,7 @@ void lvgl_set_params(){
         lvgl_toggle_current_print_panel();
         lvgl_update_print_progress();
         lvgl_set_print_label();
+        lvgl_more_lanes_toggle_show();
 }
 
 void lvgl_ui_task(void * parameter) {
