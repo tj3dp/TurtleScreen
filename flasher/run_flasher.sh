@@ -2,7 +2,7 @@
 #!/bin/bash
 
 # Install Python packages needed for the ESP flasher
-pip install esptool pyserial
+pip install esptool pyserial tk
 
 # Run the flasher Python script
 python3 flasher.py
