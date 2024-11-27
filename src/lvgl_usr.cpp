@@ -46,7 +46,7 @@ void lvgl_set_tool_status(){
 
 void lvgl_set_hub_status(){
     const char *hubStatus = lv_label_get_text(ui_HubStatus);
-    if (strcmp(hubStatus, currentLoadBuffer) != 0){
+    if (strcmp(hubStatus, booleanHelper(loadedToHub)) != 0){
         lv_label_set_text(ui_HubStatus, booleanHelper(loadedToHub));
     }
 }
@@ -125,16 +125,14 @@ void lvgl_update_print_progress() {
     if (moonraker.data.printing) {
         uint8_t progress = moonraker.data.progress > 100 ? 100 : moonraker.data.progress;
 
+        char progressBuffer[5]; // Small stack buffer to hold progress value.
+        snprintf(progressBuffer, sizeof(progressBuffer), "%u", progress);
+
         const char *currentLabel = lv_label_get_text(ui_PercentComplete);
-        char currentProgressBuffer[5];
-        snprintf(currentProgressBuffer, sizeof(currentProgressBuffer), "%u", progress);
-
-        if (strcmp(currentLabel, currentProgressBuffer) == 0) {
-            return; 
+        if (strcmp(currentLabel, progressBuffer) != 0) {
+            lv_label_set_text(ui_PercentComplete, progressBuffer);
+            lv_bar_set_value(ui_PrintProgressBar, progress, LV_ANIM_ON);
         }
-
-        lv_label_set_text(ui_PercentComplete, currentProgressBuffer);
-        lv_bar_set_value(ui_PrintProgressBar, progress, LV_ANIM_ON);
     }
 }
 
@@ -171,7 +169,8 @@ void lvgl_ui_task(void * parameter) {
         lvgl_set_params();
         lv_timer_handler();
         lastLvglUpdate = xTaskGetTickCount();
-        vTaskDelay(pdMS_TO_TICKS(5));
+        lvglTaskHeartbeat = true;
+        vTaskDelay(pdMS_TO_TICKS(10));
        }
 }
 

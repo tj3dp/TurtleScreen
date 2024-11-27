@@ -6,6 +6,7 @@
 #include "moonraker.h"
 #include "watchdog.h"
 #include <Update.h>
+#include <esp_task_wdt.h>
 
 TaskHandle_t lvglUiTaskHandle = NULL;
 TaskHandle_t apiFetchTaskHandle = NULL;
@@ -13,6 +14,7 @@ TaskHandle_t apiFetchTaskHandle = NULL;
 void setup()
 {
     Serial.begin(115200);
+    esp_task_wdt_init(30, true);
     delay(1000);
     Serial.println("Starting up... \n");
 

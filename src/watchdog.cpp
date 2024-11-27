@@ -3,7 +3,7 @@ volatile uint32_t apiTaskLastCheckIn = 0;
 const uint32_t WATCHDOG_TIMEOUT_MS = 60000; 
 
 volatile bool apiTaskHeartbeat = false;
-volatile bool lvglTaskHeartbeat = false;
+bool lvglTaskHeartbeat = false;
 
 void apiTaskCheckIn() {
     apiTaskLastCheckIn = xTaskGetTickCount();
@@ -19,6 +19,7 @@ void restartApiTask() {
 void restartLvglTask() {
     if (lvglUiTaskHandle != NULL) {
         vTaskDelete(lvglUiTaskHandle);
+        lvglUiTaskHandle = NULL;
     }
     xTaskCreate(lvgl_ui_task, "LVGL UI Task", 4096, NULL, 10, &lvglUiTaskHandle);
 }
@@ -48,10 +49,17 @@ void watchdog_task(void *param) {
             lastApiUpdate = xTaskGetTickCount();
         }
 
-        if (xTaskGetTickCount() - lastLvglUpdate > pdMS_TO_TICKS(10000)) { 
+        /*if (xTaskGetTickCount() - lastLvglUpdate > pdMS_TO_TICKS(5000)) { 
             restartLvglTask();
             lastLvglUpdate = xTaskGetTickCount();
-        }
+        }*/
+       if(!lvglTaskHeartbeat){
+        Serial.println("Bark: Restarting LVGL");
+        restartLvglTask();
+       }
+       else{
+        lvglTaskHeartbeat = false;
+       }
 
         if (xTaskGetTickCount() - lastPostUpdate > pdMS_TO_TICKS(10000)) { 
             restartPostTask();

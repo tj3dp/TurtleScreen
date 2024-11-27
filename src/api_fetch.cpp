@@ -21,7 +21,7 @@ void fetchDataTask(void *pvParameters)
     {
         if (WiFi.status() == WL_CONNECTED && !apiURL.isEmpty())
         {
-#ifdef DEBUGOUTPUT
+#ifdef DEBUG_OUTPUT
             DEBUG_PRINT("Trying to grab API data \n");
 #endif
             http.begin(apiURL);
@@ -30,7 +30,7 @@ void fetchDataTask(void *pvParameters)
             if (httpResponseCode == 200)
             {
                 String payload = http.getString();
-#ifdef DEBUGOUTPUT
+#ifdef DEBUG_OUTPUT
                 DEBUG_PRINTLN("Received data:");
                 DEBUG_PRINTLN(payload);
 #endif
@@ -58,26 +58,24 @@ void fetchDataTask(void *pvParameters)
             DEBUG_PRINTLN("Wi-Fi not connected or API URL not set");
         }
         lastApiUpdate = xTaskGetTickCount();
-        vTaskDelay(pdMS_TO_TICKS(200));
+        vTaskDelay(pdMS_TO_TICKS(400));
     }
 }
 
 void ParseAPIResponse(const String &jsonResponse) {
-#ifdef DEBUG_OUTPUT
-    Serial.println("Running API Parse");
-#endif
+    DEBUG_PRINTLN("Running API Parse");
     DynamicJsonDocument doc(4096); // Adjusted size as necessary
     DeserializationError error = deserializeJson(doc, jsonResponse);
 
     if (error) {
-        Serial.print("Failed to parse JSON: ");
-        Serial.println(error.f_str());
+        DEBUG_PRINT("Failed to parse JSON: ");
+        DEBUG_PRINTLN(error.f_str());
         return;
     }
 
     JsonObject result = doc["result"];
     if (result.isNull()) {
-        Serial.println("Result key not found in JSON.");
+        DEBUG_PRINTLN("Result key not found in JSON.");
         return;
     }
 
@@ -85,19 +83,21 @@ void ParseAPIResponse(const String &jsonResponse) {
 
     JsonObject status = result["status"];
     JsonObject afc = status["AFC"];
-    JsonObject turtle1 = afc["Turtle_1"];
+    JsonObject turtleUnit;
+    String turtleUnitName;
+    for (JsonPair kv : afc) {
+        turtleUnitName = kv.key().c_str();  
+        turtleUnit = kv.value().as<JsonObject>();
+        break; 
+    }
 
-    if (!turtle1.isNull()) {
-#ifdef DEBUG_OUTPUT
-        Serial.print("Turtle_1 Object: ");
-        serializeJson(turtle1, Serial);
-        Serial.println();
-#endif
+    if (!turtleUnit.isNull()) {
+        DEBUG_PRINT(turtleUnitName + " Object: ");
         // Iterate through the legs (leg1, leg2, leg3, leg4)
         for (int leg = 1; leg <= 4; ++leg) {
             String legKey = "leg" + String(leg);
-            if (turtle1.containsKey(legKey)) {
-                JsonObject legData = turtle1[legKey];
+            if (turtleUnit.containsKey(legKey)) {
+                JsonObject legData = turtleUnit[legKey];
                 bool load = legData["load"];
                 bool prep = legData["prep"];
                 bool loadedToHub = legData["loaded_to_hub"];
@@ -107,25 +107,22 @@ void ParseAPIResponse(const String &jsonResponse) {
                 float weight = legData["weight"].as<float>();
 
                 int lane = legData["LANE"];
-
-#ifdef DEBUG_OUTPUT
-                Serial.print("Lane ");
-                Serial.print(lane);
-                Serial.print(" - Load: ");
-                Serial.print(load ? "true" : "false");
-                Serial.print(", Prep: ");
-                Serial.print(prep ? "true" : "false");
-                Serial.print(", Loaded to Hub: ");
-                Serial.print(loadedToHub ? "true" : "false");
-                Serial.print(", Material: ");
-                Serial.print(material);
-                Serial.print(", Spool ID: ");
-                Serial.print(spool_id);
-                Serial.print(", Color: ");
-                Serial.print(color);
-                Serial.print(", Weight: ");
-                Serial.println(weight);
-#endif
+                DEBUG_PRINT("Lane ");
+                DEBUG_PRINT(lane);
+                DEBUG_PRINT(" - Load: ");
+                DEBUG_PRINT(load ? "true" : "false");
+                DEBUG_PRINT(", Prep: ");
+                DEBUG_PRINT(prep ? "true" : "false");
+                DEBUG_PRINT(", Loaded to Hub: ");
+                DEBUG_PRINT(loadedToHub ? "true" : "false");
+                DEBUG_PRINT(", Material: ");
+                DEBUG_PRINT(material);
+                DEBUG_PRINT(", Spool ID: ");
+                DEBUG_PRINT(spool_id);
+                DEBUG_PRINT(", Color: ");
+                DEBUG_PRINT(color);
+                DEBUG_PRINT(", Weight: ");
+                DEBUG_PRINTLN(weight);
                 // Update leg load statuses
                 switch (lane) {
                     case 1:
@@ -144,27 +141,33 @@ void ParseAPIResponse(const String &jsonResponse) {
                         break;
                 }
             } else {
-#ifdef DEBUG_OUTPUT
-                Serial.print("Checking key: ");
-                Serial.println(legKey);
-                Serial.println("Key not found.");
-#endif
+                DEBUG_PRINT("Checking key: ");
+                DEBUG_PRINTLN(legKey);
+                DEBUG_PRINTLN("Key not found.");
             }
         }
+
+        // Parsing Turtle Unit's system information (hub_loaded, etc.)
+        JsonObject turtleSystem = turtleUnit["system"];
+        if (!turtleSystem.isNull()) {
+            bool hubLoaded = turtleSystem["hub_loaded"].as<bool>();
+            bool canCut = turtleSystem["can_cut"].as<bool>();
+            String screen = turtleSystem["screen"].as<String>();
+            DEBUG_PRINT("Hub Loaded: ");
+            DEBUG_PRINTLN(hubLoaded ? "true" : "false");
+            DEBUG_PRINT("Can Cut: ");
+            DEBUG_PRINTLN(canCut ? "true" : "false");
+            DEBUG_PRINT("Screen: ");
+            DEBUG_PRINTLN(screen);
+            loadedToHub = hubLoaded; // Assigning hubLoaded status to toolLoaded if relevant
+        }
     } else {
-#ifdef DEBUG_OUTPUT
-        Serial.println("Turtle_1 key not found in AFC.");
-#endif
+        DEBUG_PRINTLN("Unit key not found in AFC.");
     }
 
-    // Parsing system information
+    // Parsing AFC system information
     JsonObject system = afc["system"];
     if (!system.isNull()) {
-#ifdef DEBUG_OUTPUT
-        Serial.print("System Object: ");
-        serializeJson(system, Serial);
-        Serial.println();
-#endif
         currentLoadChanged = false;
         currentLoad = system["current_load"].as<const char *>();
 
@@ -181,38 +184,32 @@ void ParseAPIResponse(const String &jsonResponse) {
             }
         }
 
-        toolLoaded = system["tool_loaded"];
-        bool canCut = system["can_cut"].as<bool>();
-        String screen = system["screen"].as<String>();
+        JsonObject extruder = system["extruders"]["extruder"];
+        if (!extruder.isNull()) {
+            toolLoaded = extruder["tool_start_sensor"].as<bool>();
 
-#ifdef DEBUG_OUTPUT
-        Serial.print("Raw tool_loaded value: ");
-        Serial.println(toolLoaded ? "true" : "false");
-        Serial.print("Can Cut: ");
-        Serial.println(canCut ? "true" : "false");
-        Serial.print("Screen: ");
-        Serial.println(screen);
-#endif
+            String buffer = extruder["buffer"].as<String>();
+            String bufferStatus = extruder["buffer_status"].as<String>();
+            DEBUG_PRINT("Tool Loaded: ");
+            DEBUG_PRINTLN(toolLoaded ? "true" : "false");
+            DEBUG_PRINT("Buffer: ");
+            DEBUG_PRINTLN(buffer);
+            DEBUG_PRINT("Buffer Status: ");
+            DEBUG_PRINTLN(bufferStatus);
+        }
     } else {
-#ifdef DEBUG_OUTPUT
-        Serial.println("System key not found in AFC.");
-#endif
+        DEBUG_PRINTLN("System key not found in AFC.");
     }
-
-#ifdef DEBUG_OUTPUT
-    Serial.print("Lane 1 Status: ");
-    Serial.println(leg1Load);
-    Serial.print("Lane 2 Status: ");
-    Serial.println(leg2Load);
-    Serial.print("Lane 3 Status: ");
-    Serial.println(leg3Load);
-    Serial.print("Lane 4 Status: ");
-    Serial.println(leg4Load);
-    Serial.print("Tool Status: ");
-    Serial.println(toolLoaded ? "true" : "false");
-    Serial.print("Hub Status: ");
-    Serial.println(loadedToHub ? "true" : "false");
-    Serial.print("Current Load: ");
-    Serial.println(currentLoad);
-#endif
+    DEBUG_PRINT("Lane 1 Status: ");
+    DEBUG_PRINTLN(leg1Load);
+    DEBUG_PRINT("Lane 2 Status: ");
+    DEBUG_PRINTLN(leg2Load);
+    DEBUG_PRINT("Lane 3 Status: ");
+    DEBUG_PRINTLN(leg3Load);
+    DEBUG_PRINT("Lane 4 Status: ");
+    DEBUG_PRINTLN(leg4Load);
+    DEBUG_PRINT("Tool Status: ");
+    DEBUG_PRINTLN(toolLoaded ? "true" : "false");
+    DEBUG_PRINT("Current Load: ");
+    DEBUG_PRINTLN(currentLoad);
 }
