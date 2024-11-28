@@ -10,11 +10,17 @@ extern "C" {
 
 extern lv_color_t color;
 extern int colorChangeState;
+extern int selectedTool;
 
-void tool0ChangeCall(lv_event_t * e);
-void tool1ChangeCall(lv_event_t * e);
-void tool2ChangeCall(lv_event_t * e);
-void tool3ChangeCall(lv_event_t * e);
+void toolChangeCall(lv_event_t * e, int toolNo);
+void ejectLaneCall(lv_event_t * e, int toolNo);
+void afcBrushCall(lv_event_t * e);
+void afcCutCall(lv_event_t * e);
+void afcKickCall(lv_event_t * e);
+void afcParkCall(lv_event_t * e);
+void afcPoopCall(lv_event_t * e);
+void btPrepCall(lv_event_t * e);
+void toolUnloadCall(lv_event_t * e);
 void setActiveColor(lv_event_t * e);
 void setLoadedColor(lv_event_t * e);
 void setUnloadedColor(lv_event_t * e);

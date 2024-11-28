@@ -5,18 +5,46 @@ lv_obj_t *gif_img;
 lv_color_t color;
 
 int colorChangeState = -1;
+int selectedTool = -1;
 
-void tool0ChangeCall(lv_event_t * e){
-    moonraker.post_gcode_to_queue("T0");
+void toolChangeCall(lv_event_t * e, int toolNo){
+    char command[10];
+    snprintf(command, sizeof(command), "T%d", toolNo);
+    moonraker.post_gcode_to_queue(command);
 }
-void tool1ChangeCall(lv_event_t * e){
-    moonraker.post_gcode_to_queue("T1");
+
+void ejectLaneCall(lv_event_t * e, int toolNo){
+    char command[10];
+    snprintf(command, sizeof(command), "t%d", toolNo);
+    moonraker.post_gcode_to_queue(command);
 }
-void tool2ChangeCall(lv_event_t * e){
-    moonraker.post_gcode_to_queue("T2");
+
+void afcBrushCall(lv_event_t * e){
+    moonraker.post_gcode_to_queue("AFC_BRUSH");
 }
-void tool3ChangeCall(lv_event_t * e){
-    moonraker.post_gcode_to_queue("T3");
+
+void afcCutCall(lv_event_t * e){
+    moonraker.post_gcode_to_queue("AFC_CUT");
+}
+
+void afcKickCall(lv_event_t * e){
+    moonraker.post_gcode_to_queue("AFC_KICK");
+}
+
+void afcParkCall(lv_event_t * e){
+    moonraker.post_gcode_to_queue("AFC_PARK");
+}
+
+void afcPoopCall(lv_event_t * e){
+    moonraker.post_gcode_to_queue("AFC_POOP");
+}
+
+void btPrepCall(lv_event_t * e){
+    moonraker.post_gcode_to_queue("BT_PREP");
+}
+
+void toolUnloadCall(lv_event_t * e){
+    moonraker.post_gcode_to_queue("BT_TOOL_UNLOAD");
 }
 
 void setActiveColor(lv_event_t * e){
