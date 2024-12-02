@@ -3,7 +3,7 @@ volatile uint32_t apiTaskLastCheckIn = 0;
 const uint32_t WATCHDOG_TIMEOUT_MS = 60000; 
 
 volatile bool apiTaskHeartbeat = false;
-bool lvglTaskHeartbeat = false;
+volatile bool lvglTaskHeartbeat = false;
 
 void apiTaskCheckIn() {
     apiTaskLastCheckIn = xTaskGetTickCount();

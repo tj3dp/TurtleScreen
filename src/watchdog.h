@@ -10,7 +10,7 @@
 
 
 void watchdog_task(void *parameters);
-extern bool lvglTaskHeartbeat;
+extern volatile bool lvglTaskHeartbeat;
 #ifndef pdMS_TO_TICKS
 #define pdMS_TO_TICKS(x) ((x) / portTICK_PERIOD_MS)
 #endif

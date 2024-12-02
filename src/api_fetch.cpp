@@ -58,7 +58,7 @@ void fetchDataTask(void *pvParameters)
             DEBUG_PRINTLN("Wi-Fi not connected or API URL not set");
         }
         lastApiUpdate = xTaskGetTickCount();
-        vTaskDelay(pdMS_TO_TICKS(400));
+        vTaskDelay(pdMS_TO_TICKS(900));
     }
 }
 

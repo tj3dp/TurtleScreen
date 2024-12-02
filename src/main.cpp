@@ -28,7 +28,7 @@ void setup()
         {
             Serial.println("Failed to create WiFi Connect Task");
         }
-        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 4096, NULL, 10, &lvglUiTaskHandle);
+        xTaskCreate(lvgl_ui_task, "LVGL Init Task", 8192, NULL, 10, &lvglUiTaskHandle);
         xTaskCreate(moonraker_post_task, "moonraker post", 4096, NULL, 7, &postTaskHandle);
     }
     else
