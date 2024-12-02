@@ -220,6 +220,7 @@ void ui_event_Tool0Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 0;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -229,6 +230,7 @@ void ui_event_Tool1Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 1;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -238,6 +240,7 @@ void ui_event_Tool2Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 2;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -247,6 +250,7 @@ void ui_event_Tool3Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 3;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -256,6 +260,7 @@ void ui_event_Tool4Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 4;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -265,6 +270,7 @@ void ui_event_Tool5Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 5;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -274,6 +280,7 @@ void ui_event_Tool6Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 6;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -283,6 +290,7 @@ void ui_event_Tool7Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 7;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -292,6 +300,7 @@ void ui_event_Tool8Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 8;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -301,6 +310,7 @@ void ui_event_Tool9Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 9;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -310,6 +320,7 @@ void ui_event_Tool10Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 10;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
@@ -319,6 +330,7 @@ void ui_event_Tool11Button(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
+        selectedTool = 11;
         _ui_screen_change(&ui_CurrentLaneToggle, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_CurrentLaneToggle_screen_init);
     }
 }
