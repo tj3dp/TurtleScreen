@@ -81,6 +81,8 @@ void ui_CurrentLaneToggle_screen_init(void)
     lv_obj_set_align(ui_Label23, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label23, "Back");
 
+    lv_obj_add_event_cb(ui_ActivateLane, ui_event_ActivateLane, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_EjectLane, ui_event_EjectLane, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_BackLaneToggle, ui_event_BackLaneToggle, LV_EVENT_ALL, NULL);
 
 }

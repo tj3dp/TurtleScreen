@@ -82,8 +82,10 @@ lv_obj_t * uic_CurrentNozzleTemp;
 void ui_CurrentLaneToggle_screen_init(void);
 lv_obj_t * ui_CurrentLaneToggle;
 lv_obj_t * ui_Panel3;
+void ui_event_ActivateLane(lv_event_t * e);
 lv_obj_t * ui_ActivateLane;
 lv_obj_t * ui_ActivateLaneLabel;
+void ui_event_EjectLane(lv_event_t * e);
 lv_obj_t * ui_EjectLane;
 lv_obj_t * ui_EjectLaneLabel;
 void ui_event_BackLaneToggle(lv_event_t * e);
@@ -350,6 +352,24 @@ void ui_event_ControlButton(lv_event_t * e)
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_GeneralControl, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_GeneralControl_screen_init);
+    }
+}
+
+void ui_event_ActivateLane(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        SetLaneActive(e);
+    }
+}
+
+void ui_event_EjectLane(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        EjectLane(e);
     }
 }
 
