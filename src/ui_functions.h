@@ -26,6 +26,10 @@ void setLoadedColor(lv_event_t * e);
 void setUnloadedColor(lv_event_t * e);
 void setButtonColor(lv_event_t * e);
 void saveColorWheel(lv_event_t * e);
+
+void SetLaneActive(lv_event_t * e, int activeLane);
+void EjectLane(lv_event_t * e, int ejectLane);
+
 #ifdef __cplusplus
 } /*extern "C"*/
 #endif

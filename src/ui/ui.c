@@ -360,7 +360,7 @@ void ui_event_ActivateLane(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        SetLaneActive(e);
+        SetLaneActive(e, selectedTool);
     }
 }
 
@@ -369,7 +369,7 @@ void ui_event_EjectLane(lv_event_t * e)
     lv_event_code_t event_code = lv_event_get_code(e);
 
     if(event_code == LV_EVENT_CLICKED) {
-        EjectLane(e);
+        EjectLane(e, selectedTool);
     }
 }
 
@@ -379,6 +379,7 @@ void ui_event_BackLaneToggle(lv_event_t * e)
 
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_LaneSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_LaneSelect_screen_init);
+        selectedTool = -1;
     }
 }
 

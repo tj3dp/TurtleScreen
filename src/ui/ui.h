@@ -11,10 +11,9 @@ extern "C" {
 #endif
 
 #include "../../lib/lvgl/lvgl.h"
-#include "../ui_functions.h"
 
 #include "ui_helpers.h"
-#include "ui_events.h"
+#include "../ui_functions.h"
 #include "ui_theme_manager.h"
 #include "ui_themes.h"
 

@@ -74,3 +74,16 @@ void setButtonColor(lv_event_t * e) {
 void saveColorWheel(lv_event_t * e){
     color = lv_colorwheel_get_rgb(ui_Colorwheel1);
 }
+
+void SetLaneActive(lv_event_t * e, int laneActive){
+    char command[10];
+    snprintf(command, sizeof(command), "t%d", laneActive);
+    moonraker.post_gcode_to_queue(command);
+}
+
+void EjectLane(lv_event_t * e, int laneEject){
+    char command[10];
+    snprintf(command, sizeof(command), "BT_LANE_EJECT LANE=%d", laneEject);
+    moonraker.post_gcode_to_queue(command);
+    
+}
