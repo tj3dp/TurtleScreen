@@ -99,18 +99,25 @@ lv_obj_t * ui_Label23;
 void ui_GeneralControl_screen_init(void);
 lv_obj_t * ui_GeneralControl;
 lv_obj_t * ui_Panel5;
+void ui_event_AFCBrush(lv_event_t * e);
 lv_obj_t * ui_AFCBrush;
 lv_obj_t * ui_Label7;
+void ui_event_AFCCut(lv_event_t * e);
 lv_obj_t * ui_AFCCut;
 lv_obj_t * ui_Label8;
+void ui_event_AFCKick(lv_event_t * e);
 lv_obj_t * ui_AFCKick;
 lv_obj_t * ui_Label9;
+void ui_event_AFCPark(lv_event_t * e);
 lv_obj_t * ui_AFCPark;
 lv_obj_t * ui_Label10;
+void ui_event_AFCPoop(lv_event_t * e);
 lv_obj_t * ui_AFCPoop;
 lv_obj_t * ui_Label11;
+void ui_event_BTPrep(lv_event_t * e);
 lv_obj_t * ui_BTPrep;
 lv_obj_t * ui_Label12;
+void ui_event_BTToolUnload(lv_event_t * e);
 lv_obj_t * ui_BTToolUnload;
 lv_obj_t * ui_Label13;
 void ui_event_Button11(lv_event_t * e);
@@ -380,6 +387,69 @@ void ui_event_BackLaneToggle(lv_event_t * e)
     if(event_code == LV_EVENT_CLICKED) {
         _ui_screen_change(&ui_LaneSelect, LV_SCR_LOAD_ANIM_FADE_ON, 500, 0, &ui_LaneSelect_screen_init);
         selectedTool = -1;
+    }
+}
+
+void ui_event_AFCBrush(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        afcBrushCall(e);
+    }
+}
+
+void ui_event_AFCCut(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        afcCutCall(e);
+    }
+}
+
+void ui_event_AFCKick(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        afcKickCall(e);
+    }
+}
+
+void ui_event_AFCPark(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        afcParkCall(e);
+    }
+}
+
+void ui_event_AFCPoop(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        afcPoopCall(e);
+    }
+}
+
+void ui_event_BTPrep(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        btPrepCall(e);
+    }
+}
+
+void ui_event_BTToolUnload(lv_event_t * e)
+{
+    lv_event_code_t event_code = lv_event_get_code(e);
+
+    if(event_code == LV_EVENT_CLICKED) {
+        toolUnloadCall(e);
     }
 }
 

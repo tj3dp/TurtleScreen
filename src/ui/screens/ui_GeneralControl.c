@@ -171,6 +171,13 @@ void ui_GeneralControl_screen_init(void)
     lv_obj_set_align(ui_Label24, LV_ALIGN_CENTER);
     lv_label_set_text(ui_Label24, "Back");
 
+    lv_obj_add_event_cb(ui_AFCBrush, ui_event_AFCBrush, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_AFCCut, ui_event_AFCCut, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_AFCKick, ui_event_AFCKick, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_AFCPark, ui_event_AFCPark, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_AFCPoop, ui_event_AFCPoop, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_BTPrep, ui_event_BTPrep, LV_EVENT_ALL, NULL);
+    lv_obj_add_event_cb(ui_BTToolUnload, ui_event_BTToolUnload, LV_EVENT_ALL, NULL);
     lv_obj_add_event_cb(ui_Button11, ui_event_Button11, LV_EVENT_ALL, NULL);
 
 }
