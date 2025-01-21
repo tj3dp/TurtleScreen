@@ -82,7 +82,7 @@ void SetLaneActive(lv_event_t * e, int laneActive){
 }
 
 void EjectLane(lv_event_t * e, int laneEject){
-    char command[10];
+    char command[20];
     snprintf(command, sizeof(command), "BT_LANE_EJECT LANE=%d", laneEject);
     moonraker.post_gcode_to_queue(command);
     
