@@ -152,7 +152,7 @@ void loadCredentials()
 
         // Construct the API URL from the saved host
         apiURL = "http://" + targetHost + "/printer/afc/status";
-        if(apiURL == )
+        
         DEBUG_PRINTLN("API URL: " + apiURL); // Print API URL for debugging
     }
     else
