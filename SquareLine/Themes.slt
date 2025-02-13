@@ -1,7 +1,20 @@
 {
   "deftheme": {
     "name": "Default",
-    "properties": []
+    "properties": [
+      {
+        "nid": 1000495,
+        "strtype": "THEME_COLOR",
+        "strval": "Blue",
+        "intarray": [
+          32,
+          149,
+          246,
+          255
+        ],
+        "InheritedType": 0
+      }
+    ]
   },
   "themes": [],
   "selected_theme": "Default"
