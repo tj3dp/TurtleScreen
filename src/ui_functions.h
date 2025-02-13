@@ -10,7 +10,7 @@ extern "C" {
 
 extern lv_color_t color;
 extern int colorChangeState;
-extern int selectedTool;
+extern int selected;
 
 void toolChangeCall(lv_event_t * e, int toolNo);
 void ejectLaneCall(lv_event_t * e, int toolNo);
@@ -27,8 +27,8 @@ void setUnloadedColor(lv_event_t * e);
 void setButtonColor(lv_event_t * e);
 void saveColorWheel(lv_event_t * e);
 
-void SetLaneActive(lv_event_t * e, int activeLane);
-void EjectLane(lv_event_t * e, int ejectLane);
+void SetToolActive(lv_event_t * e, int tool);
+void EjectLane(lv_event_t * e, int lane);
 
 #ifdef __cplusplus
 } /*extern "C"*/
