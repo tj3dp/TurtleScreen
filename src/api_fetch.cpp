@@ -2,10 +2,11 @@
 
 String apiURL;
 float eventTime;
-bool leg1Load;
-bool leg2Load;
-bool leg3Load;
-bool leg4Load;
+
+bool legLoad[NUM_LEGS];
+int  legLane[NUM_LEGS];
+int  legMapTool[NUM_LEGS];
+
 const char *currentLoad;
 bool toolLoaded;
 bool loadedToHub;
@@ -81,7 +82,7 @@ void ParseAPIResponse(const String &jsonResponse) {
 
     eventTime = result["eventtime"].as<float>();
 
-    JsonObject status = result["status"];
+    JsonObject status = result["status:"];
     JsonObject afc = status["AFC"];
     JsonObject turtleUnit;
     String turtleUnitName;
@@ -94,9 +95,11 @@ void ParseAPIResponse(const String &jsonResponse) {
     if (!turtleUnit.isNull()) {
         DEBUG_PRINT(turtleUnitName + " Object: ");
         // Iterate through the legs (leg1, leg2, leg3, leg4)
-        for (int leg = 1; leg <= 4; ++leg) {
-            String legKey = "leg" + String(leg);
-            if (turtleUnit.containsKey(legKey)) {
+        for (int n = 0; n <= 3; ++n)  // try to find 4 lane keys from 'lane1' to 'lane4' - TODO: extend number of keys to find to 12
+        {
+            String legKey = "lane" + String(n+1);
+            if (turtleUnit.containsKey(legKey)) 
+            {
                 JsonObject legData = turtleUnit[legKey];
                 bool load = legData["load"];
                 bool prep = legData["prep"];
@@ -105,9 +108,16 @@ void ParseAPIResponse(const String &jsonResponse) {
                 String spool_id = legData["spool_id"].as<String>();
                 String color = legData["color"].as<String>();
                 float weight = legData["weight"].as<float>();
+                int lane = legData["lane"];
+                String smap = legData["map"].as<String>();
+                if((smap[0] == 'T') && (smap.length() == 2))
+                    legMapTool[n] = (int)(smap[1] - '0');
+                else
+                    legMapTool[n] = -1; // TODO: error handling for missing mapping lane -> tool
+                
+                legLane[n] = lane;
 
-                int lane = legData["LANE"];
-                DEBUG_PRINT("Lane ");
+                DEBUG_PRINT("lane ");
                 DEBUG_PRINT(lane);
                 DEBUG_PRINT(" - Load: ");
                 DEBUG_PRINT(load ? "true" : "false");
@@ -123,23 +133,8 @@ void ParseAPIResponse(const String &jsonResponse) {
                 DEBUG_PRINT(color);
                 DEBUG_PRINT(", Weight: ");
                 DEBUG_PRINTLN(weight);
-                // Update leg load statuses
-                switch (lane) {
-                    case 1:
-                        leg1Load = load;
-                        break;
-                    case 2:
-                        leg2Load = load;
-                        break;
-                    case 3:
-                        leg3Load = load;
-                        break;
-                    case 4:
-                        leg4Load = load;
-                        break;
-                    default:
-                        break;
-                }
+                // Update leg/lane load statuses
+                legLoad[n] = load;
             } else {
                 DEBUG_PRINT("Checking key: ");
                 DEBUG_PRINTLN(legKey);
@@ -201,13 +196,13 @@ void ParseAPIResponse(const String &jsonResponse) {
         DEBUG_PRINTLN("System key not found in AFC.");
     }
     DEBUG_PRINT("Lane 1 Status: ");
-    DEBUG_PRINTLN(leg1Load);
+    DEBUG_PRINTLN(legLoad[0]);
     DEBUG_PRINT("Lane 2 Status: ");
-    DEBUG_PRINTLN(leg2Load);
+    DEBUG_PRINTLN(legLoad[1]);
     DEBUG_PRINT("Lane 3 Status: ");
-    DEBUG_PRINTLN(leg3Load);
+    DEBUG_PRINTLN(legLoad[2]);
     DEBUG_PRINT("Lane 4 Status: ");
-    DEBUG_PRINTLN(leg4Load);
+    DEBUG_PRINTLN(legLoad[3]);
     DEBUG_PRINT("Tool Status: ");
     DEBUG_PRINTLN(toolLoaded ? "true" : "false");
     DEBUG_PRINT("Current Load: ");
