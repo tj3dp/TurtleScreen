@@ -1,4 +1,8 @@
-//#define DEBUG_OUTPUT
+#include "Arduino.h"
+
+
+#define DEBUG_OUTPUT
+
 
 #ifdef DEBUG_OUTPUT
     #define DEBUG_PRINT(x)    Serial.print(x)

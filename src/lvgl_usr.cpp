@@ -1,12 +1,13 @@
 #include "lvgl_usr.h"
+#include "api_fetch.h"
 
 void lv_popup_warning(const char * warning, bool clickable);
 void lv_popup_remove(lv_event_t * e) ;
 uint32_t lastLvglUpdate;
-lv_color_t activeColor = lv_color_hex(0xab34eb);
-lv_color_t loadedColor = lv_color_hex(0x3ca811);
-lv_color_t unloadedColor = lv_color_hex(0xf29727);
-lv_color_t buttonColor = lv_color_hex(0x2095F6);
+lv_color_t activeColor =    lv_color_hex(0x0000ff);
+lv_color_t loadedColor =    lv_color_hex(0x00ff00);
+lv_color_t unloadedColor =  lv_color_hex(0xff0000);
+lv_color_t buttonColor =    lv_color_hex(0x202020);
 
 int activeLane = -1;
 
@@ -33,119 +34,63 @@ uint32_t lv_color_to_hex(lv_color_t color) {
     return hexValue;
 }
 
-void lvgl_set_current_leg() {
+void lvgl_set_current_leg() 
+{
    if (strlen(currentLoadBuffer) == 5) 
         activeLane = atoi(&currentLoadBuffer[4]);
    else 
         activeLane = -1;
 }
 
-void lvgl_set_tool_status(){
-    const char *toolStatus = lv_label_get_text(ui_ToolStatus);
-    if (strcmp(toolStatus, currentLoadBuffer) != 0){
-        lv_label_set_text(ui_ToolStatus, booleanHelper(toolLoaded));
+void lvgl_set_tool_status()
+{
+    const char *toolStatus = lv_label_get_text(ui_LblToolStatus);
+    if (strcmp(toolStatus, extruderLaneLoaded.c_str()) != -1)
+    {
+        lv_label_set_text(ui_LblToolStatus, extruderLaneLoaded.c_str());
     }
 }
 
-void lvgl_set_hub_status(){
-    const char *hubStatus = lv_label_get_text(ui_HubStatus);
-    if (strcmp(hubStatus, booleanHelper(loadedToHub)) != 0){
-        lv_label_set_text(ui_HubStatus, booleanHelper(loadedToHub));
+void lvgl_set_hub_status()
+{
+    const char *hubStatus = lv_label_get_text(ui_LblHubStatus);
+    if (strcmp(hubStatus, booleanHelper(loadedToHub)) != 0)
+    {
+        lv_label_set_text(ui_LblHubStatus, booleanHelper(loadedToHub));
     }
 }
 
-void lvgl_set_active_lane_color(){
-    switch (activeLane)
-                {
-                    case 1:
-                    lv_obj_set_style_bg_color(ui_Tool0Button, activeColor, LV_PART_MAIN);
-                        break;
-                    case 2:
-                    lv_obj_set_style_bg_color(ui_Tool1Button, activeColor, LV_PART_MAIN);
-                        break;
-                    case 3:
-                    lv_obj_set_style_bg_color(ui_Tool2Button, activeColor, LV_PART_MAIN);
-                        break;
-                    case 4:
-                    lv_obj_set_style_bg_color(ui_Tool3Button, activeColor, LV_PART_MAIN);
-                        break;
-                    
-                }
+void lvgl_set_leg_status()
+{
+    lv_obj_t* slots[4] = {ui_LblSlot0, ui_LblSlot1, ui_LblSlot2, ui_LblSlot3}; 
+    lv_obj_t* btn[4]   = {ui_BtnSlot0, ui_BtnSlot1, ui_BtnSlot2, ui_BtnSlot3}; 
+
+    for (int n = 0; n <= 3; ++n)
+    {
+        char buffer[20];
+        sprintf(buffer, "Lane%d\nT%d", legLane[n], legMapTool[n]);
+        if(String(lv_label_get_text(slots[n])) != String(buffer) )
+            lv_label_set_text(slots[n], buffer);
+
+        //lv_obj_set_style_bg_color(btn[n], activeLane==legLane[n] ? activeColor : legLoad[n] ? loadedColor : unloadedColor, LV_PART_MAIN);
+        lv_obj_set_style_bg_color(btn[n], lv_color_hex(legColor[n]), LV_PART_MAIN);
+        }
 }
 
-void lvgl_set_leg_status(){
-    assert(NUM_LEGS == 4);  // TODO: support dynamic number of legs/lanes
-    lv_obj_set_style_bg_color(ui_Tool0Button, legLoad[0] ? loadedColor : unloadedColor, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(ui_Tool1Button, legLoad[1] ? loadedColor : unloadedColor, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(ui_Tool2Button, legLoad[2] ? loadedColor : unloadedColor, LV_PART_MAIN);
-    lv_obj_set_style_bg_color(ui_Tool3Button, legLoad[3] ? loadedColor : unloadedColor, LV_PART_MAIN);
-    lvgl_set_active_lane_color();
-}
-
-void lvgl_set_nozzle_temp(){
-    if(moonraker.data.nozzle_actual != atoi(lv_label_get_text(ui_CurrentNozzleTemp))){
+void lvgl_set_nozzle_temp()
+{
+    if(moonraker.data.nozzle_actual != atoi(lv_label_get_text(ui_LblNozzle))){
         char buffer[12];
         sprintf(buffer, "%d", moonraker.data.nozzle_actual);
-        lv_label_set_text(ui_CurrentNozzleTemp, buffer);
+        lv_label_set_text(ui_LblNozzle, buffer);
     }
 }
 
 void lvgl_set_bed_temp(){
-    if(moonraker.data.nozzle_actual != atoi(lv_label_get_text(ui_CurrentBedTemp))){
+    if(moonraker.data.nozzle_actual != atoi(lv_label_get_text(ui_LblBed))){
         char buffer[12];
         sprintf(buffer, "%d", moonraker.data.bed_actual);
-        lv_label_set_text(ui_CurrentBedTemp, buffer);
-    }
-}
-
-void lvgl_toggle_current_print_panel() {
-    if (ui_SwitchStatusPanel == nullptr || ui_Printstatus == nullptr) {
-        Serial.println("Error: UI elements are not initialized properly.");
-        return;
-    }
-    bool switchStatusHidden = lv_obj_has_flag(ui_SwitchStatusPanel, LV_OBJ_FLAG_HIDDEN);
-    bool printStatusHidden = lv_obj_has_flag(ui_Printstatus, LV_OBJ_FLAG_HIDDEN);
-
-    if (moonraker.data.printing) {
-        if (printStatusHidden) {
-            if (!switchStatusHidden) {
-                lv_obj_add_flag(ui_SwitchStatusPanel, LV_OBJ_FLAG_HIDDEN);
-            }
-            lv_obj_clear_flag(ui_Printstatus, LV_OBJ_FLAG_HIDDEN);
-        }
-    } else {
-        if (!printStatusHidden) {
-            lv_obj_add_flag(ui_Printstatus, LV_OBJ_FLAG_HIDDEN);
-        }
-        lv_obj_clear_flag(ui_SwitchStatusPanel, LV_OBJ_FLAG_HIDDEN);
-    }
-}
-
-void lvgl_update_print_progress() {
-    if (moonraker.data.printing) {
-        uint8_t progress = moonraker.data.progress > 100 ? 100 : moonraker.data.progress;
-
-        char progressBuffer[5]; // Small stack buffer to hold progress value.
-        snprintf(progressBuffer, sizeof(progressBuffer), "%u", progress);
-
-        const char *currentLabel = lv_label_get_text(ui_PercentComplete);
-        if (strcmp(currentLabel, progressBuffer) != 0) {
-            lv_label_set_text(ui_PercentComplete, progressBuffer);
-            lv_bar_set_value(ui_PrintProgressBar, progress, LV_ANIM_ON);
-        }
-    }
-}
-
-
-void lvgl_set_print_label(){
-    if(moonraker.data.printing){
-        lv_label_set_text(ui_Label3, moonraker.data.file_path);
-    }
-}
-
-void lvgl_more_lanes_toggle_show(){
-    if(numUnits > 1){
-
+        lv_label_set_text(ui_LblBed, buffer);
     }
 }
 
@@ -156,21 +101,17 @@ void lvgl_set_params(){
         lvgl_set_leg_status();
         lvgl_set_nozzle_temp();
         lvgl_set_bed_temp();
-        lvgl_toggle_current_print_panel();
-        lvgl_update_print_progress();
-        lvgl_set_print_label();
-        lvgl_more_lanes_toggle_show();
 }
 
 void lvgl_ui_task(void * parameter) {
     lvgl_hal_init();
     ui_init();
-       for(;;) {
+    for(;;) {
         lvgl_set_params();
         lv_timer_handler();
         lastLvglUpdate = xTaskGetTickCount();
         lvglTaskHeartbeat = true;
         vTaskDelay(pdMS_TO_TICKS(10));
-       }
+    }
 }
 

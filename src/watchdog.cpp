@@ -5,46 +5,47 @@ const uint32_t WATCHDOG_TIMEOUT_MS = 60000;
 volatile bool apiTaskHeartbeat = false;
 volatile bool lvglTaskHeartbeat = false;
 
-void apiTaskCheckIn() {
+void apiTaskCheckIn() 
+{
     apiTaskLastCheckIn = xTaskGetTickCount();
 }
 
-void restartApiTask() {
-    if (apiFetchTaskHandle != NULL) {
+void restartApiTask() 
+{
+    if (apiFetchTaskHandle != NULL) 
+    {
         vTaskDelete(apiFetchTaskHandle);
     }
     xTaskCreate(fetchDataTask, "API Fetch Task", 4096, NULL, 8, &apiFetchTaskHandle);
 }
 
-void restartLvglTask() {
-    if (lvglUiTaskHandle != NULL) {
+void restartLvglTask() 
+{
+    if (lvglUiTaskHandle != NULL) 
+    {
         vTaskDelete(lvglUiTaskHandle);
         lvglUiTaskHandle = NULL;
     }
     xTaskCreate(lvgl_ui_task, "LVGL UI Task", 4096, NULL, 10, &lvglUiTaskHandle);
 }
 
-void restartMoonRakerTask() {
-    if (moonrakerTaskHandle != NULL) {
-        vTaskDelete(moonrakerTaskHandle);
-    }
-    xTaskCreate(moonraker_task, "moonraker task", 4096, NULL, 7, &moonrakerTaskHandle);
-}
-void restartPostTask() {
+void restartPostTask() 
+{
     if (postTaskHandle != NULL) {
         vTaskDelete(postTaskHandle);
     }
     xTaskCreate(moonraker_post_task, "moonraker post", 4096, NULL, 6, &postTaskHandle);
 }
 
-
-
-void watchdog_task(void *param) {
+void watchdog_task(void *param) 
+{
     static uint32_t lastApiUpdate = 0;
     static uint32_t lastLvglUpdate = 0;
 
-    while (1) {
-        if (xTaskGetTickCount() - lastApiUpdate > pdMS_TO_TICKS(10000)) { 
+    while (1) 
+    {
+        if (xTaskGetTickCount() - lastApiUpdate > pdMS_TO_TICKS(10000)) 
+        { 
             restartApiTask();
             lastApiUpdate = xTaskGetTickCount();
         }
@@ -53,19 +54,22 @@ void watchdog_task(void *param) {
             restartLvglTask();
             lastLvglUpdate = xTaskGetTickCount();
         }*/
-       if(!lvglTaskHeartbeat){
-        Serial.println("Bark: Restarting LVGL");
-        restartLvglTask();
+       if(!lvglTaskHeartbeat)
+       {
+            Serial.println("Bark: Restarting LVGL");
+            restartLvglTask();
        }
-       else{
-        lvglTaskHeartbeat = false;
+       else
+       {
+            lvglTaskHeartbeat = false;
        }
 
-        if (xTaskGetTickCount() - lastPostUpdate > pdMS_TO_TICKS(10000)) { 
+        if (xTaskGetTickCount() - lastPostUpdate > pdMS_TO_TICKS(10000))
+        { 
             restartPostTask();
             lastPostUpdate = xTaskGetTickCount();
         }
-
         vTaskDelay(pdMS_TO_TICKS(1000));
     }
 }
+

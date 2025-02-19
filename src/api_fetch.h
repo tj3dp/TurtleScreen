@@ -12,11 +12,13 @@ extern float eventTime;
 #define NUM_LEGS    12   // TODO: support dynamic number of legs/lanes
 extern bool legLoad[NUM_LEGS];
 extern int  legLane[NUM_LEGS];
+extern int  legColor[NUM_LEGS];
 extern int  legMapTool[NUM_LEGS];
 
 extern const char* currentLoad;
 extern char currentLoadBuffer[32];
 extern bool toolLoaded;
+extern String extruderLaneLoaded;
 extern bool loadedToHub;
 extern bool currentLoadChanged;
 extern int numUnits;

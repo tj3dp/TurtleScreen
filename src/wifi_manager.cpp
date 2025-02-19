@@ -13,9 +13,8 @@ TaskHandle_t WifITaskHandle = NULL;
 
 void suspendTasks() {
     if (apiFetchTaskHandle != NULL) vTaskSuspend(apiFetchTaskHandle);
-    if (lvglUiTaskHandle != NULL) vTaskSuspend(lvglUiTaskHandle);
-    if (postTaskHandle != NULL) vTaskSuspend(postTaskHandle);
-    if (apiFetchTaskHandle != NULL) vTaskSuspend(apiFetchTaskHandle);
+    if (lvglUiTaskHandle != NULL)   vTaskSuspend(lvglUiTaskHandle);
+    if (postTaskHandle != NULL)     vTaskSuspend(postTaskHandle);
 }
 
 void setupWebSite(){
@@ -63,12 +62,14 @@ void setupWebSite(){
         }
     },
     [](AsyncWebServerRequest *request, String filename, size_t index, uint8_t *data, size_t len, bool final) {
-        if (index == 0) {
+        if (index == 0) 
+        {
             Serial.printf("Starting OTA update: %s\n", filename.c_str());
 
             suspendTasks();
 
-            if (!Update.begin(UPDATE_SIZE_UNKNOWN)) {
+            if (!Update.begin(UPDATE_SIZE_UNKNOWN)) 
+            {
                 Update.printError(Serial);
             }
         }

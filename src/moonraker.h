@@ -13,9 +13,7 @@
 //     MOONRAKER_STATE_IDLE,
 // } moonraker_status_t;
 
-void moonraker_task(void * parameter);
 void moonraker_post_task(void * parameter);
-extern TaskHandle_t moonrakerTaskHandle;
 extern TaskHandle_t postTaskHandle;
 extern uint32_t lastMoonRakerUpdate;
 extern uint32_t lastPostUpdate;
@@ -63,8 +61,6 @@ class MOONRAKER {
         post_queue_t post_queue;
         void get_printer_ready(void);
         void get_printer_info(void);
-        void get_progress(void);
-        void get_AFC_status(void);
 };
 
 extern MOONRAKER moonraker;

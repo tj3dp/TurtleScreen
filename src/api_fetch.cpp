@@ -1,14 +1,18 @@
 #include "api_fetch.h"
 
+#undef DEBUG_OUTPUT_FETCH
+
 String apiURL;
 float eventTime;
 
 bool legLoad[NUM_LEGS];
+int  legColor[NUM_LEGS];
 int  legLane[NUM_LEGS];
 int  legMapTool[NUM_LEGS];
 
 const char *currentLoad;
 bool toolLoaded;
+String extruderLaneLoaded = "-none-";
 bool loadedToHub;
 bool currentLoadChanged;
 char currentLoadBuffer[32] = "";
@@ -22,7 +26,7 @@ void fetchDataTask(void *pvParameters)
     {
         if (WiFi.status() == WL_CONNECTED && !apiURL.isEmpty())
         {
-#ifdef DEBUG_OUTPUT
+#ifdef DEBUG_OUTPUT_FETCH
             DEBUG_PRINT("Trying to grab API data \n");
 #endif
             http.begin(apiURL);
@@ -31,7 +35,7 @@ void fetchDataTask(void *pvParameters)
             if (httpResponseCode == 200)
             {
                 String payload = http.getString();
-#ifdef DEBUG_OUTPUT
+#ifdef DEBUG_OUTPUT_FETCH
                 DEBUG_PRINTLN("Received data:");
                 DEBUG_PRINTLN(payload);
 #endif
@@ -45,13 +49,9 @@ void fetchDataTask(void *pvParameters)
             }
             http.end();
             moonraker.get_printer_ready();
-            if(!moonraker.unready){
-                moonraker.get_AFC_status();
+            if(!moonraker.unready)
+            {
                 moonraker.get_printer_info();
-                if(moonraker.data.printing)
-                {
-                    moonraker.get_progress();
-                }
             }
         }
         else
@@ -63,19 +63,24 @@ void fetchDataTask(void *pvParameters)
     }
 }
 
-void ParseAPIResponse(const String &jsonResponse) {
-    DEBUG_PRINTLN("Running API Parse");
+void ParseAPIResponse(const String &jsonResponse) 
+{
+    #ifdef DEBUG_OUTPUT_FETCH
+        DEBUG_PRINTLN("Running API Parse");
+    #endif
     DynamicJsonDocument doc(4096); // Adjusted size as necessary
     DeserializationError error = deserializeJson(doc, jsonResponse);
 
-    if (error) {
+    if (error) 
+    {
         DEBUG_PRINT("Failed to parse JSON: ");
         DEBUG_PRINTLN(error.f_str());
         return;
     }
 
     JsonObject result = doc["result"];
-    if (result.isNull()) {
+    if (result.isNull()) 
+    {
         DEBUG_PRINTLN("Result key not found in JSON.");
         return;
     }
@@ -86,14 +91,18 @@ void ParseAPIResponse(const String &jsonResponse) {
     JsonObject afc = status["AFC"];
     JsonObject turtleUnit;
     String turtleUnitName;
-    for (JsonPair kv : afc) {
+    for (JsonPair kv : afc) 
+    {
         turtleUnitName = kv.key().c_str();  
         turtleUnit = kv.value().as<JsonObject>();
         break; 
     }
 
-    if (!turtleUnit.isNull()) {
-        DEBUG_PRINT(turtleUnitName + " Object: ");
+    if (!turtleUnit.isNull()) 
+    {
+        #ifdef DEBUG_OUTPUT_FETCH
+            DEBUG_PRINT(turtleUnitName + " Object: ");
+        #endif
         // Iterate through the legs (leg1, leg2, leg3, leg4)
         for (int n = 0; n <= 3; ++n)  // try to find 4 lane keys from 'lane1' to 'lane4' - TODO: extend number of keys to find to 12
         {
@@ -106,9 +115,13 @@ void ParseAPIResponse(const String &jsonResponse) {
                 bool loadedToHub = legData["loaded_to_hub"];
                 String material = legData["material"].as<String>();
                 String spool_id = legData["spool_id"].as<String>();
-                String color = legData["color"].as<String>();
+                String scolor = legData["color"].as<String>();
                 float weight = legData["weight"].as<float>();
                 int lane = legData["lane"];
+                //int ledColor = (int)strtol(legData["filament_status_led"].as<String>().replace("#", "0x").c_str(), NULL, 16);
+                String sLedColor = legData["filament_status_led"].as<String>();
+                sLedColor.replace("#", "0x");
+                int ledColor = (int)strtol(sLedColor.c_str(), NULL, 16);
                 String smap = legData["map"].as<String>();
                 if((smap[0] == 'T') && (smap.length() == 2))
                     legMapTool[n] = (int)(smap[1] - '0');
@@ -116,7 +129,9 @@ void ParseAPIResponse(const String &jsonResponse) {
                     legMapTool[n] = -1; // TODO: error handling for missing mapping lane -> tool
                 
                 legLane[n] = lane;
+                legColor[n] = ledColor;
 
+                #ifdef DEBUG_OUTPUT_FETCH
                 DEBUG_PRINT("lane ");
                 DEBUG_PRINT(lane);
                 DEBUG_PRINT(" - Load: ");
@@ -130,9 +145,10 @@ void ParseAPIResponse(const String &jsonResponse) {
                 DEBUG_PRINT(", Spool ID: ");
                 DEBUG_PRINT(spool_id);
                 DEBUG_PRINT(", Color: ");
-                DEBUG_PRINT(color);
+                DEBUG_PRINT(scolor);
                 DEBUG_PRINT(", Weight: ");
                 DEBUG_PRINTLN(weight);
+                #endif
                 // Update leg/lane load statuses
                 legLoad[n] = load;
             } else {
@@ -148,21 +164,26 @@ void ParseAPIResponse(const String &jsonResponse) {
             bool hubLoaded = turtleSystem["hub_loaded"].as<bool>();
             bool canCut = turtleSystem["can_cut"].as<bool>();
             String screen = turtleSystem["screen"].as<String>();
+            #ifdef DEBUG_OUTPUT_FETCH
             DEBUG_PRINT("Hub Loaded: ");
             DEBUG_PRINTLN(hubLoaded ? "true" : "false");
             DEBUG_PRINT("Can Cut: ");
             DEBUG_PRINTLN(canCut ? "true" : "false");
             DEBUG_PRINT("Screen: ");
             DEBUG_PRINTLN(screen);
+            #endif
             loadedToHub = hubLoaded; // Assigning hubLoaded status to toolLoaded if relevant
         }
-    } else {
+    } 
+    else 
+    {
         DEBUG_PRINTLN("Unit key not found in AFC.");
     }
 
     // Parsing AFC system information
     JsonObject system = afc["system"];
-    if (!system.isNull()) {
+    if (!system.isNull()) 
+    {
         currentLoadChanged = false;
         currentLoad = system["current_load"].as<const char *>();
 
@@ -182,19 +203,26 @@ void ParseAPIResponse(const String &jsonResponse) {
         JsonObject extruder = system["extruders"]["extruder"];
         if (!extruder.isNull()) {
             toolLoaded = extruder["tool_start_sensor"].as<bool>();
+            if(extruder["lane_loaded"].as<const char *>() == nullptr)
+                extruderLaneLoaded = "-none-";
+            else
+                extruderLaneLoaded = extruder["lane_loaded"].as<String>();
 
             String buffer = extruder["buffer"].as<String>();
             String bufferStatus = extruder["buffer_status"].as<String>();
+            #ifdef DEBUG_OUTPUT_FETCH
             DEBUG_PRINT("Tool Loaded: ");
             DEBUG_PRINTLN(toolLoaded ? "true" : "false");
             DEBUG_PRINT("Buffer: ");
             DEBUG_PRINTLN(buffer);
             DEBUG_PRINT("Buffer Status: ");
             DEBUG_PRINTLN(bufferStatus);
+            #endif
         }
     } else {
         DEBUG_PRINTLN("System key not found in AFC.");
     }
+    #ifdef DEBUG_OUTPUT_FETCH
     DEBUG_PRINT("Lane 1 Status: ");
     DEBUG_PRINTLN(legLoad[0]);
     DEBUG_PRINT("Lane 2 Status: ");
@@ -207,4 +235,5 @@ void ParseAPIResponse(const String &jsonResponse) {
     DEBUG_PRINTLN(toolLoaded ? "true" : "false");
     DEBUG_PRINT("Current Load: ");
     DEBUG_PRINTLN(currentLoad);
+    #endif
 }

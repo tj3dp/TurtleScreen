@@ -4,7 +4,7 @@
 #include "api_fetch.h"
 #include "esp_mac.h"
 #include "lvgl_usr.h"
-#include "projdefs.h"
+//#include "projdefs.h"
 #include "lvgl_hal.h"
 #include "moonraker.h"
 

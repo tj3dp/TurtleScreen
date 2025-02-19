@@ -1,5 +1,5 @@
 #include <lvgl.h>
-#include "ui/ui.h"
+#include "ui.h"
 
 #ifndef _UI_FUNCTIONS_H
 #define _UI_FUNCTIONS_H
@@ -9,26 +9,22 @@ extern "C" {
 #endif
 
 extern lv_color_t color;
-extern int colorChangeState;
 extern int selected;
+extern int legLane[12];
+extern int legMapTool[12];
 
-void toolChangeCall(lv_event_t * e, int toolNo);
-void ejectLaneCall(lv_event_t * e, int toolNo);
-void afcBrushCall(lv_event_t * e);
-void afcCutCall(lv_event_t * e);
-void afcKickCall(lv_event_t * e);
-void afcParkCall(lv_event_t * e);
-void afcPoopCall(lv_event_t * e);
-void btPrepCall(lv_event_t * e);
-void toolUnloadCall(lv_event_t * e);
-void setActiveColor(lv_event_t * e);
-void setLoadedColor(lv_event_t * e);
-void setUnloadedColor(lv_event_t * e);
-void setButtonColor(lv_event_t * e);
-void saveColorWheel(lv_event_t * e);
+void afcBrushCall();
+void afcCutCall();
+void afcKickCall();
+void afcParkCall();
+void afcPoopCall();
+void btPrepCall();
 
-void SetToolActive(lv_event_t * e, int tool);
-void EjectLane(lv_event_t * e, int lane);
+void g32Call();
+
+void DoUnload();
+void DoLoadTool(int tool);
+void DoEjectLane(int lane);
 
 #ifdef __cplusplus
 } /*extern "C"*/
